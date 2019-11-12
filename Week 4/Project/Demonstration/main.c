@@ -41,7 +41,7 @@ int main(void)
     STM_EVAL_LEDInit(LED4);
     STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
 
-    LEDOFF();
+    LEDOff();
     STM_EVAL_LEDOn(LED3);// Initialize the LEDs at an alternating state
 
     while (1)
