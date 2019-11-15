@@ -75,18 +75,19 @@ int main(void)
                 break;
         }
         if (STM_EVAL_PBGetState(BUTTON_USER) == (1 - state % 2)) {
-        // This conditional is equivalent to:
-        //
-        //     if ((STM_EVAL_PBGetState(BUTTON_USER) == 1 && (state % 2 == 0)) ||
-        //         (STM_EVAL_PBGetState(BUTTON_USER) == 0 && (state % 2 == 1))) {
-        //
-        // Which means that an even numbered state will go to the next state on a button press,
-        // whereas an odd numbered state will go to the next state after a button release.
-            state++;
-            if (state == STATE_OFF_B + 1) {  // If we just came out of OFF state (hence the +1)
-                STM_EVAL_LEDOff(LED3);       // we need to restore the alternating
-                STM_EVAL_LEDOn(LED4);        // behaviour of the LEDs.
+            // ^^^ This conditional is equivalent to:
+            //
+            //     if ((STM_EVAL_PBGetState(BUTTON_USER) == 1 && (state % 2 == 0)) ||
+            //         (STM_EVAL_PBGetState(BUTTON_USER) == 0 && (state % 2 == 1))) {
+            //
+            // Which means that an even numbered state will go to the next state on a button press,
+            // whereas an odd numbered state will go to the next state after a button release.
+         
+            if (state == STATE_OFF_B) {      // If we just came out of OFF state we need to
+                STM_EVAL_LEDOff(LED3);       // restore the alternating behavior of the LEDs.
+                STM_EVAL_LEDOn(LED4);
             }
+            state++;
         }
     }
 }
