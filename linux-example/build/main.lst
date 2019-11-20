@@ -1,0 +1,625 @@
+ARM GAS  /tmp/cc34PJcB.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.global	__aeabi_uidiv
+  16              		.section	.text.LEDToggle,"ax",%progbits
+  17              		.align	1
+  18              		.global	LEDToggle
+  19              		.arch armv6s-m
+  20              		.syntax unified
+  21              		.code	16
+  22              		.thumb_func
+  23              		.fpu softvfp
+  25              	LEDToggle:
+  26              	.LVL0:
+  27              	.LFB41:
+  28              		.file 1 "Src/main.c"
+   1:Src/main.c    **** /**
+   2:Src/main.c    ****   ******************************************************************************
+   3:Src/main.c    ****   * @file    main.c
+   4:Src/main.c    ****   * @author  Mertcan Ekiz
+   5:Src/main.c    ****   * @version V1.0.0
+   6:Src/main.c    ****   * @date    18-May-2015
+   7:Src/main.c    ****   * @brief   Blinking LEDs
+   8:Src/main.c    ****  *
+   9:Src/main.c    ****   ******************************************************************************
+  10:Src/main.c    ****   */
+  11:Src/main.c    **** /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  12:Src/main.c    **** #include "main.h"
+  13:Src/main.c    **** #include <stm32f0xx.h>
+  14:Src/main.c    **** 
+  15:Src/main.c    **** void LEDToggle(uint16_t delay);
+  16:Src/main.c    **** void LEDOff();
+  17:Src/main.c    **** void Delay(__IO uint32_t nTime);
+  18:Src/main.c    **** void TimingDelay_Decrement(void);
+  19:Src/main.c    **** 
+  20:Src/main.c    **** #define FIRST_STATE 0
+  21:Src/main.c    **** typedef enum {
+  22:Src/main.c    ****     STATE_500_A = FIRST_STATE,
+  23:Src/main.c    ****     STATE_500_B,
+  24:Src/main.c    ****     STATE_200_A,
+  25:Src/main.c    ****     STATE_200_B,
+  26:Src/main.c    ****     STATE_100_A,
+  27:Src/main.c    ****     STATE_100_B,
+  28:Src/main.c    ****     STATE_20_A,
+  29:Src/main.c    ****     STATE_20_B,
+  30:Src/main.c    ****     STATE_OFF_A,
+ARM GAS  /tmp/cc34PJcB.s 			page 2
+
+
+  31:Src/main.c    ****     STATE_OFF_B
+  32:Src/main.c    **** } STATE;
+  33:Src/main.c    **** 
+  34:Src/main.c    **** uint8_t state = STATE_OFF_A;
+  35:Src/main.c    **** uint16_t counter = 0;
+  36:Src/main.c    **** static __IO uint32_t TimingDelay;
+  37:Src/main.c    **** 
+  38:Src/main.c    **** int main(void)
+  39:Src/main.c    **** {
+  40:Src/main.c    ****     STM_EVAL_LEDInit(LED3);
+  41:Src/main.c    ****     STM_EVAL_LEDInit(LED4);
+  42:Src/main.c    ****     STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
+  43:Src/main.c    **** 
+  44:Src/main.c    ****     LEDOff();
+  45:Src/main.c    ****     STM_EVAL_LEDOn(LED3);// Initialize the LEDs at an alternating state
+  46:Src/main.c    **** 
+  47:Src/main.c    ****     while (1)
+  48:Src/main.c    ****     {
+  49:Src/main.c    ****         switch (state)
+  50:Src/main.c    ****         {
+  51:Src/main.c    ****             // Each state toggles the LEDs as much milliseconds
+  52:Src/main.c    ****             // as is written in their name.
+  53:Src/main.c    ****             case STATE_500_A:
+  54:Src/main.c    ****             case STATE_500_B:
+  55:Src/main.c    ****                 LEDToggle(500);
+  56:Src/main.c    ****                 break;
+  57:Src/main.c    ****             case STATE_200_A:
+  58:Src/main.c    ****             case STATE_200_B:
+  59:Src/main.c    ****                 LEDToggle(200);
+  60:Src/main.c    ****                 break;
+  61:Src/main.c    ****             case STATE_100_A:
+  62:Src/main.c    ****             case STATE_100_B:
+  63:Src/main.c    ****                 LEDToggle(100);
+  64:Src/main.c    ****                 break;
+  65:Src/main.c    ****             case STATE_20_A:
+  66:Src/main.c    ****             case STATE_20_B:
+  67:Src/main.c    ****                 LEDToggle(20);
+  68:Src/main.c    ****                 break;
+  69:Src/main.c    ****             case STATE_OFF_A:
+  70:Src/main.c    ****             case STATE_OFF_B:
+  71:Src/main.c    ****                 LEDOff();
+  72:Src/main.c    ****                 break;
+  73:Src/main.c    ****             default:
+  74:Src/main.c    ****                 state = FIRST_STATE;
+  75:Src/main.c    ****                 break;
+  76:Src/main.c    ****         }
+  77:Src/main.c    ****         if (STM_EVAL_PBGetState(BUTTON_USER) == (1 - state % 2)) {
+  78:Src/main.c    ****             // ^^^ This conditional is equivalent to:
+  79:Src/main.c    ****             //
+  80:Src/main.c    ****             //     if ((STM_EVAL_PBGetState(BUTTON_USER) == 1 && (state % 2 == 0)) ||
+  81:Src/main.c    ****             //         (STM_EVAL_PBGetState(BUTTON_USER) == 0 && (state % 2 == 1))) {
+  82:Src/main.c    ****             //
+  83:Src/main.c    ****             // Which means that an even numbered state will go to the next state on a button press,
+  84:Src/main.c    ****             // whereas an odd numbered state will go to the next state after a button release.
+  85:Src/main.c    **** 
+  86:Src/main.c    ****             if (state == STATE_OFF_B) {      // If we just came out of OFF state we need to
+  87:Src/main.c    ****                 STM_EVAL_LEDOff(LED3);       // restore the alternating behavior of the LEDs.
+ARM GAS  /tmp/cc34PJcB.s 			page 3
+
+
+  88:Src/main.c    ****                 STM_EVAL_LEDOn(LED4);
+  89:Src/main.c    ****             }
+  90:Src/main.c    ****             state++;
+  91:Src/main.c    ****         }
+  92:Src/main.c    ****         Delay(5);
+  93:Src/main.c    ****     }
+  94:Src/main.c    **** }
+  95:Src/main.c    **** 
+  96:Src/main.c    **** void LEDToggle(uint16_t delay)
+  97:Src/main.c    **** {
+  29              		.loc 1 97 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 97 1 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 14, -4
+  98:Src/main.c    ****     if (++counter > delay / 10) {
+  39              		.loc 1 98 5 is_stmt 1 view .LVU2
+  40              		.loc 1 98 9 is_stmt 0 view .LVU3
+  41 0002 0B4B     		ldr	r3, .L4
+  42 0004 1C88     		ldrh	r4, [r3]
+  43 0006 0134     		adds	r4, r4, #1
+  44 0008 A4B2     		uxth	r4, r4
+  45              		.loc 1 98 8 view .LVU4
+  46 000a 1C80     		strh	r4, [r3]
+  47              		.loc 1 98 19 view .LVU5
+  48 000c 0A21     		movs	r1, #10
+  49 000e FFF7FEFF 		bl	__aeabi_uidiv
+  50              	.LVL1:
+  51              		.loc 1 98 19 view .LVU6
+  52 0012 80B2     		uxth	r0, r0
+  53              		.loc 1 98 8 view .LVU7
+  54 0014 8442     		cmp	r4, r0
+  55 0016 00D8     		bhi	.L3
+  56              	.L1:
+  99:Src/main.c    ****         STM_EVAL_LEDToggle(LED3);
+ 100:Src/main.c    ****         STM_EVAL_LEDToggle(LED4);
+ 101:Src/main.c    ****         counter = 0;
+ 102:Src/main.c    ****     }
+ 103:Src/main.c    **** }
+  57              		.loc 1 103 1 view .LVU8
+  58              		@ sp needed
+  59 0018 10BD     		pop	{r4, pc}
+  60              	.L3:
+  99:Src/main.c    ****         STM_EVAL_LEDToggle(LED3);
+  61              		.loc 1 99 9 is_stmt 1 view .LVU9
+  62 001a 0020     		movs	r0, #0
+  63 001c FFF7FEFF 		bl	STM_EVAL_LEDToggle
+  64              	.LVL2:
+ 100:Src/main.c    ****         counter = 0;
+  65              		.loc 1 100 9 view .LVU10
+  66 0020 0120     		movs	r0, #1
+  67 0022 FFF7FEFF 		bl	STM_EVAL_LEDToggle
+ARM GAS  /tmp/cc34PJcB.s 			page 4
+
+
+  68              	.LVL3:
+ 101:Src/main.c    ****     }
+  69              		.loc 1 101 9 view .LVU11
+ 101:Src/main.c    ****     }
+  70              		.loc 1 101 17 is_stmt 0 view .LVU12
+  71 0026 024B     		ldr	r3, .L4
+  72 0028 0022     		movs	r2, #0
+  73 002a 1A80     		strh	r2, [r3]
+  74              		.loc 1 103 1 view .LVU13
+  75 002c F4E7     		b	.L1
+  76              	.L5:
+  77 002e C046     		.align	2
+  78              	.L4:
+  79 0030 00000000 		.word	.LANCHOR0
+  80              		.cfi_endproc
+  81              	.LFE41:
+  83              		.section	.text.LEDOff,"ax",%progbits
+  84              		.align	1
+  85              		.global	LEDOff
+  86              		.syntax unified
+  87              		.code	16
+  88              		.thumb_func
+  89              		.fpu softvfp
+  91              	LEDOff:
+  92              	.LFB42:
+ 104:Src/main.c    **** 
+ 105:Src/main.c    **** void LEDOff()
+ 106:Src/main.c    **** {
+  93              		.loc 1 106 1 is_stmt 1 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 10B5     		push	{r4, lr}
+  98              	.LCFI1:
+  99              		.cfi_def_cfa_offset 8
+ 100              		.cfi_offset 4, -8
+ 101              		.cfi_offset 14, -4
+ 107:Src/main.c    ****     STM_EVAL_LEDOff(LED3);
+ 102              		.loc 1 107 5 view .LVU15
+ 103 0002 0020     		movs	r0, #0
+ 104 0004 FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 105              	.LVL4:
+ 108:Src/main.c    ****     STM_EVAL_LEDOff(LED4);
+ 106              		.loc 1 108 5 view .LVU16
+ 107 0008 0120     		movs	r0, #1
+ 108 000a FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 109              	.LVL5:
+ 109:Src/main.c    **** }
+ 110              		.loc 1 109 1 is_stmt 0 view .LVU17
+ 111              		@ sp needed
+ 112 000e 10BD     		pop	{r4, pc}
+ 113              		.cfi_endproc
+ 114              	.LFE42:
+ 116              		.section	.text.TimingDelay_Decrement,"ax",%progbits
+ 117              		.align	1
+ 118              		.global	TimingDelay_Decrement
+ 119              		.syntax unified
+ARM GAS  /tmp/cc34PJcB.s 			page 5
+
+
+ 120              		.code	16
+ 121              		.thumb_func
+ 122              		.fpu softvfp
+ 124              	TimingDelay_Decrement:
+ 125              	.LFB44:
+ 110:Src/main.c    **** 
+ 111:Src/main.c    **** void Delay(__IO uint32_t nTime)
+ 112:Src/main.c    **** {
+ 113:Src/main.c    ****     TimingDelay = nTime * 2000; // This 2000 value is arbitrary and roughly eyeballed;
+ 114:Src/main.c    ****                                 // The code needs a better delay implementation.
+ 115:Src/main.c    ****     while (TimingDelay != 0)
+ 116:Src/main.c    ****         TimingDelay_Decrement();
+ 117:Src/main.c    **** }
+ 118:Src/main.c    **** 
+ 119:Src/main.c    **** void TimingDelay_Decrement(void)
+ 120:Src/main.c    **** {
+ 126              		.loc 1 120 1 is_stmt 1 view -0
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+ 121:Src/main.c    ****     if (TimingDelay != 0x00)
+ 131              		.loc 1 121 5 view .LVU19
+ 132              		.loc 1 121 21 is_stmt 0 view .LVU20
+ 133 0000 044B     		ldr	r3, .L9
+ 134 0002 1B68     		ldr	r3, [r3]
+ 135              		.loc 1 121 8 view .LVU21
+ 136 0004 002B     		cmp	r3, #0
+ 137 0006 03D0     		beq	.L7
+ 122:Src/main.c    ****     {
+ 123:Src/main.c    ****         TimingDelay--;
+ 138              		.loc 1 123 9 is_stmt 1 view .LVU22
+ 139              		.loc 1 123 20 is_stmt 0 view .LVU23
+ 140 0008 024A     		ldr	r2, .L9
+ 141 000a 1368     		ldr	r3, [r2]
+ 142 000c 013B     		subs	r3, r3, #1
+ 143 000e 1360     		str	r3, [r2]
+ 144              	.L7:
+ 124:Src/main.c    ****     }
+ 125:Src/main.c    **** }
+ 145              		.loc 1 125 1 view .LVU24
+ 146              		@ sp needed
+ 147 0010 7047     		bx	lr
+ 148              	.L10:
+ 149 0012 C046     		.align	2
+ 150              	.L9:
+ 151 0014 00000000 		.word	.LANCHOR1
+ 152              		.cfi_endproc
+ 153              	.LFE44:
+ 155              		.section	.text.Delay,"ax",%progbits
+ 156              		.align	1
+ 157              		.global	Delay
+ 158              		.syntax unified
+ 159              		.code	16
+ 160              		.thumb_func
+ 161              		.fpu softvfp
+ 163              	Delay:
+ARM GAS  /tmp/cc34PJcB.s 			page 6
+
+
+ 164              	.LVL6:
+ 165              	.LFB43:
+ 112:Src/main.c    ****     TimingDelay = nTime * 2000; // This 2000 value is arbitrary and roughly eyeballed;
+ 166              		.loc 1 112 1 is_stmt 1 view -0
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 8
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112:Src/main.c    ****     TimingDelay = nTime * 2000; // This 2000 value is arbitrary and roughly eyeballed;
+ 170              		.loc 1 112 1 is_stmt 0 view .LVU26
+ 171 0000 00B5     		push	{lr}
+ 172              	.LCFI2:
+ 173              		.cfi_def_cfa_offset 4
+ 174              		.cfi_offset 14, -4
+ 175 0002 83B0     		sub	sp, sp, #12
+ 176              	.LCFI3:
+ 177              		.cfi_def_cfa_offset 16
+ 178 0004 0190     		str	r0, [sp, #4]
+ 113:Src/main.c    ****                                 // The code needs a better delay implementation.
+ 179              		.loc 1 113 5 is_stmt 1 view .LVU27
+ 113:Src/main.c    ****                                 // The code needs a better delay implementation.
+ 180              		.loc 1 113 25 is_stmt 0 view .LVU28
+ 181 0006 019A     		ldr	r2, [sp, #4]
+ 182 0008 5301     		lsls	r3, r2, #5
+ 183 000a 9B1A     		subs	r3, r3, r2
+ 184 000c 9B00     		lsls	r3, r3, #2
+ 185 000e 9B18     		adds	r3, r3, r2
+ 186 0010 1A01     		lsls	r2, r3, #4
+ 113:Src/main.c    ****                                 // The code needs a better delay implementation.
+ 187              		.loc 1 113 17 view .LVU29
+ 188 0012 054B     		ldr	r3, .L15
+ 189 0014 1A60     		str	r2, [r3]
+ 115:Src/main.c    ****         TimingDelay_Decrement();
+ 190              		.loc 1 115 5 is_stmt 1 view .LVU30
+ 191              	.LVL7:
+ 192              	.L12:
+ 115:Src/main.c    ****         TimingDelay_Decrement();
+ 193              		.loc 1 115 11 view .LVU31
+ 115:Src/main.c    ****         TimingDelay_Decrement();
+ 194              		.loc 1 115 24 is_stmt 0 view .LVU32
+ 195 0016 044B     		ldr	r3, .L15
+ 196 0018 1B68     		ldr	r3, [r3]
+ 115:Src/main.c    ****         TimingDelay_Decrement();
+ 197              		.loc 1 115 11 view .LVU33
+ 198 001a 002B     		cmp	r3, #0
+ 199 001c 02D0     		beq	.L14
+ 116:Src/main.c    **** }
+ 200              		.loc 1 116 9 is_stmt 1 view .LVU34
+ 201 001e FFF7FEFF 		bl	TimingDelay_Decrement
+ 202              	.LVL8:
+ 203 0022 F8E7     		b	.L12
+ 204              	.L14:
+ 117:Src/main.c    **** 
+ 205              		.loc 1 117 1 is_stmt 0 view .LVU35
+ 206 0024 03B0     		add	sp, sp, #12
+ 207              		@ sp needed
+ 208 0026 00BD     		pop	{pc}
+ 209              	.L16:
+ARM GAS  /tmp/cc34PJcB.s 			page 7
+
+
+ 210              		.align	2
+ 211              	.L15:
+ 212 0028 00000000 		.word	.LANCHOR1
+ 213              		.cfi_endproc
+ 214              	.LFE43:
+ 216              		.section	.text.main,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	main
+ 219              		.syntax unified
+ 220              		.code	16
+ 221              		.thumb_func
+ 222              		.fpu softvfp
+ 224              	main:
+ 225              	.LFB40:
+  39:Src/main.c    ****     STM_EVAL_LEDInit(LED3);
+ 226              		.loc 1 39 1 is_stmt 1 view -0
+ 227              		.cfi_startproc
+ 228              		@ Volatile: function does not return.
+ 229              		@ args = 0, pretend = 0, frame = 0
+ 230              		@ frame_needed = 0, uses_anonymous_args = 0
+ 231 0000 10B5     		push	{r4, lr}
+ 232              	.LCFI4:
+ 233              		.cfi_def_cfa_offset 8
+ 234              		.cfi_offset 4, -8
+ 235              		.cfi_offset 14, -4
+  40:Src/main.c    ****     STM_EVAL_LEDInit(LED4);
+ 236              		.loc 1 40 5 view .LVU37
+ 237 0002 0020     		movs	r0, #0
+ 238 0004 FFF7FEFF 		bl	STM_EVAL_LEDInit
+ 239              	.LVL9:
+  41:Src/main.c    ****     STM_EVAL_PBInit(BUTTON_USER, BUTTON_MODE_GPIO);
+ 240              		.loc 1 41 5 view .LVU38
+ 241 0008 0120     		movs	r0, #1
+ 242 000a FFF7FEFF 		bl	STM_EVAL_LEDInit
+ 243              	.LVL10:
+  42:Src/main.c    **** 
+ 244              		.loc 1 42 5 view .LVU39
+ 245 000e 0021     		movs	r1, #0
+ 246 0010 0020     		movs	r0, #0
+ 247 0012 FFF7FEFF 		bl	STM_EVAL_PBInit
+ 248              	.LVL11:
+  44:Src/main.c    ****     STM_EVAL_LEDOn(LED3);// Initialize the LEDs at an alternating state
+ 249              		.loc 1 44 5 view .LVU40
+ 250 0016 FFF7FEFF 		bl	LEDOff
+ 251              	.LVL12:
+  45:Src/main.c    **** 
+ 252              		.loc 1 45 5 view .LVU41
+ 253 001a 0020     		movs	r0, #0
+ 254 001c FFF7FEFF 		bl	STM_EVAL_LEDOn
+ 255              	.LVL13:
+ 256 0020 17E0     		b	.L28
+ 257              	.L24:
+  55:Src/main.c    ****                 break;
+ 258              		.loc 1 55 17 view .LVU42
+ 259 0022 FA20     		movs	r0, #250
+ 260 0024 4000     		lsls	r0, r0, #1
+ 261 0026 FFF7FEFF 		bl	LEDToggle
+ARM GAS  /tmp/cc34PJcB.s 			page 8
+
+
+ 262              	.LVL14:
+  56:Src/main.c    ****             case STATE_200_A:
+ 263              		.loc 1 56 17 view .LVU43
+ 264              	.L25:
+  77:Src/main.c    ****             // ^^^ This conditional is equivalent to:
+ 265              		.loc 1 77 9 view .LVU44
+  77:Src/main.c    ****             // ^^^ This conditional is equivalent to:
+ 266              		.loc 1 77 13 is_stmt 0 view .LVU45
+ 267 002a 0020     		movs	r0, #0
+ 268 002c FFF7FEFF 		bl	STM_EVAL_PBGetState
+ 269              	.LVL15:
+  77:Src/main.c    ****             // ^^^ This conditional is equivalent to:
+ 270              		.loc 1 77 60 view .LVU46
+ 271 0030 194B     		ldr	r3, .L30
+ 272 0032 1978     		ldrb	r1, [r3]
+  77:Src/main.c    ****             // ^^^ This conditional is equivalent to:
+ 273              		.loc 1 77 52 view .LVU47
+ 274 0034 0122     		movs	r2, #1
+ 275 0036 4A40     		eors	r2, r1
+ 276 0038 0123     		movs	r3, #1
+ 277 003a 1340     		ands	r3, r2
+  77:Src/main.c    ****             // ^^^ This conditional is equivalent to:
+ 278              		.loc 1 77 12 view .LVU48
+ 279 003c 9842     		cmp	r0, r3
+ 280 003e 05D1     		bne	.L26
+  86:Src/main.c    ****                 STM_EVAL_LEDOff(LED3);       // restore the alternating behavior of the LEDs.
+ 281              		.loc 1 86 13 is_stmt 1 view .LVU49
+  86:Src/main.c    ****                 STM_EVAL_LEDOff(LED3);       // restore the alternating behavior of the LEDs.
+ 282              		.loc 1 86 16 is_stmt 0 view .LVU50
+ 283 0040 0929     		cmp	r1, #9
+ 284 0042 21D0     		beq	.L29
+ 285              	.L27:
+  90:Src/main.c    ****         }
+ 286              		.loc 1 90 13 is_stmt 1 view .LVU51
+  90:Src/main.c    ****         }
+ 287              		.loc 1 90 18 is_stmt 0 view .LVU52
+ 288 0044 144A     		ldr	r2, .L30
+ 289 0046 1378     		ldrb	r3, [r2]
+ 290 0048 0133     		adds	r3, r3, #1
+ 291 004a 1370     		strb	r3, [r2]
+ 292              	.L26:
+  92:Src/main.c    ****     }
+ 293              		.loc 1 92 9 is_stmt 1 view .LVU53
+ 294 004c 0520     		movs	r0, #5
+ 295 004e FFF7FEFF 		bl	Delay
+ 296              	.LVL16:
+  47:Src/main.c    ****     {
+ 297              		.loc 1 47 11 view .LVU54
+ 298              	.L28:
+  47:Src/main.c    ****     {
+ 299              		.loc 1 47 5 view .LVU55
+  49:Src/main.c    ****         {
+ 300              		.loc 1 49 9 view .LVU56
+ 301 0052 114B     		ldr	r3, .L30
+ 302 0054 1B78     		ldrb	r3, [r3]
+ 303 0056 092B     		cmp	r3, #9
+ 304 0058 12D8     		bhi	.L18
+ARM GAS  /tmp/cc34PJcB.s 			page 9
+
+
+ 305 005a 9B00     		lsls	r3, r3, #2
+ 306 005c 0F4A     		ldr	r2, .L30+4
+ 307 005e D358     		ldr	r3, [r2, r3]
+ 308 0060 9F46     		mov	pc, r3
+ 309              		.section	.rodata.main,"a",%progbits
+ 310              		.align	2
+ 311              	.L20:
+ 312 0000 22000000 		.word	.L24
+ 313 0004 22000000 		.word	.L24
+ 314 0008 62000000 		.word	.L23
+ 315 000c 62000000 		.word	.L23
+ 316 0010 6A000000 		.word	.L22
+ 317 0014 6A000000 		.word	.L22
+ 318 0018 72000000 		.word	.L21
+ 319 001c 72000000 		.word	.L21
+ 320 0020 7A000000 		.word	.L19
+ 321 0024 7A000000 		.word	.L19
+ 322              		.section	.text.main
+ 323              	.L23:
+  59:Src/main.c    ****                 break;
+ 324              		.loc 1 59 17 view .LVU57
+ 325 0062 C820     		movs	r0, #200
+ 326 0064 FFF7FEFF 		bl	LEDToggle
+ 327              	.LVL17:
+  60:Src/main.c    ****             case STATE_100_A:
+ 328              		.loc 1 60 17 view .LVU58
+ 329 0068 DFE7     		b	.L25
+ 330              	.L22:
+  63:Src/main.c    ****                 break;
+ 331              		.loc 1 63 17 view .LVU59
+ 332 006a 6420     		movs	r0, #100
+ 333 006c FFF7FEFF 		bl	LEDToggle
+ 334              	.LVL18:
+  64:Src/main.c    ****             case STATE_20_A:
+ 335              		.loc 1 64 17 view .LVU60
+ 336 0070 DBE7     		b	.L25
+ 337              	.L21:
+  67:Src/main.c    ****                 break;
+ 338              		.loc 1 67 17 view .LVU61
+ 339 0072 1420     		movs	r0, #20
+ 340 0074 FFF7FEFF 		bl	LEDToggle
+ 341              	.LVL19:
+  68:Src/main.c    ****             case STATE_OFF_A:
+ 342              		.loc 1 68 17 view .LVU62
+ 343 0078 D7E7     		b	.L25
+ 344              	.L19:
+  71:Src/main.c    ****                 break;
+ 345              		.loc 1 71 17 view .LVU63
+ 346 007a FFF7FEFF 		bl	LEDOff
+ 347              	.LVL20:
+  72:Src/main.c    ****             default:
+ 348              		.loc 1 72 17 view .LVU64
+ 349 007e D4E7     		b	.L25
+ 350              	.L18:
+  74:Src/main.c    ****                 break;
+ 351              		.loc 1 74 17 view .LVU65
+  74:Src/main.c    ****                 break;
+ARM GAS  /tmp/cc34PJcB.s 			page 10
+
+
+ 352              		.loc 1 74 23 is_stmt 0 view .LVU66
+ 353 0080 054B     		ldr	r3, .L30
+ 354 0082 0022     		movs	r2, #0
+ 355 0084 1A70     		strb	r2, [r3]
+  75:Src/main.c    ****         }
+ 356              		.loc 1 75 17 is_stmt 1 view .LVU67
+ 357 0086 D0E7     		b	.L25
+ 358              	.L29:
+  87:Src/main.c    ****                 STM_EVAL_LEDOn(LED4);
+ 359              		.loc 1 87 17 view .LVU68
+ 360 0088 0020     		movs	r0, #0
+ 361 008a FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 362              	.LVL21:
+  88:Src/main.c    ****             }
+ 363              		.loc 1 88 17 view .LVU69
+ 364 008e 0120     		movs	r0, #1
+ 365 0090 FFF7FEFF 		bl	STM_EVAL_LEDOn
+ 366              	.LVL22:
+ 367 0094 D6E7     		b	.L27
+ 368              	.L31:
+ 369 0096 C046     		.align	2
+ 370              	.L30:
+ 371 0098 00000000 		.word	.LANCHOR2
+ 372 009c 00000000 		.word	.L20
+ 373              		.cfi_endproc
+ 374              	.LFE40:
+ 376              		.global	counter
+ 377              		.global	state
+ 378              		.section	.bss.TimingDelay,"aw",%nobits
+ 379              		.align	2
+ 380              		.set	.LANCHOR1,. + 0
+ 383              	TimingDelay:
+ 384 0000 00000000 		.space	4
+ 385              		.section	.bss.counter,"aw",%nobits
+ 386              		.align	1
+ 387              		.set	.LANCHOR0,. + 0
+ 390              	counter:
+ 391 0000 0000     		.space	2
+ 392              		.section	.data.state,"aw"
+ 393              		.set	.LANCHOR2,. + 0
+ 396              	state:
+ 397 0000 08       		.byte	8
+ 398              		.text
+ 399              	.Letext0:
+ 400              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 401              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 402              		.file 4 "Inc/stm32f0_discovery.h"
+ 403              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ARM GAS  /tmp/cc34PJcB.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/cc34PJcB.s:17     .text.LEDToggle:0000000000000000 $t
+     /tmp/cc34PJcB.s:25     .text.LEDToggle:0000000000000000 LEDToggle
+     /tmp/cc34PJcB.s:79     .text.LEDToggle:0000000000000030 $d
+     /tmp/cc34PJcB.s:84     .text.LEDOff:0000000000000000 $t
+     /tmp/cc34PJcB.s:91     .text.LEDOff:0000000000000000 LEDOff
+     /tmp/cc34PJcB.s:117    .text.TimingDelay_Decrement:0000000000000000 $t
+     /tmp/cc34PJcB.s:124    .text.TimingDelay_Decrement:0000000000000000 TimingDelay_Decrement
+     /tmp/cc34PJcB.s:151    .text.TimingDelay_Decrement:0000000000000014 $d
+     /tmp/cc34PJcB.s:156    .text.Delay:0000000000000000 $t
+     /tmp/cc34PJcB.s:163    .text.Delay:0000000000000000 Delay
+     /tmp/cc34PJcB.s:212    .text.Delay:0000000000000028 $d
+     /tmp/cc34PJcB.s:217    .text.main:0000000000000000 $t
+     /tmp/cc34PJcB.s:224    .text.main:0000000000000000 main
+     /tmp/cc34PJcB.s:310    .rodata.main:0000000000000000 $d
+     /tmp/cc34PJcB.s:371    .text.main:0000000000000098 $d
+     /tmp/cc34PJcB.s:390    .bss.counter:0000000000000000 counter
+     /tmp/cc34PJcB.s:396    .data.state:0000000000000000 state
+     /tmp/cc34PJcB.s:379    .bss.TimingDelay:0000000000000000 $d
+     /tmp/cc34PJcB.s:383    .bss.TimingDelay:0000000000000000 TimingDelay
+     /tmp/cc34PJcB.s:386    .bss.counter:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
+STM_EVAL_LEDToggle
+STM_EVAL_LEDOff
+STM_EVAL_LEDInit
+STM_EVAL_PBInit
+STM_EVAL_LEDOn
+STM_EVAL_PBGetState
