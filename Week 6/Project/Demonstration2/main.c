@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
   * @file    main.c 
-  * @author  Osman Kaan EROL
+  * @author  Mertcan Ekiz
   * @version V1.0.0
-  * @date    18-May-2015
+  * @date    25-Nov-2019
   * @brief   Main program body
-	*          The code has accelerated by a factor of 10! Every periods must be
-	*          divided by 10! Eg 255ms means 25.5ms now...
+	*
+	*
 	*
   ******************************************************************************
   */ 
@@ -52,6 +52,13 @@ int main(void)
     
 	while(1)
     {
+        // The STM32F0 Discovery button has a lot of switch bouncing issue. See:
+        // https://www.allaboutcircuits.com/technical-articles/switch-bounce-how-to-deal-with-it/
+        //
+        // Electrically, this can be dealt with using a capacitor,
+        // so this is a "capacitor" implementation that accumulates and
+        // when the button is held longer than ~10ms, we consider it to be ON.
+        
         uint8_t currentButton = STM_EVAL_PBGetState(BUTTON_USER);
         button ^= currentButton;
         if (button == 0) {
@@ -65,6 +72,8 @@ int main(void)
             button_accum[0] = 0;
             button_accum[1] = 0;
         }
+        
+        // Finite state machine
         switch(currentState) {
             case STATE_OFF_A:
                 STM_EVAL_LEDOff(LED3);
@@ -140,8 +149,8 @@ void setPeriod(uint16_t period)
 void setState(uint8_t state)
 {
     currentState = state;
-    if (state == STATE_3S_A || state ==  STATE_3S_B) setPeriod(3000);
-    if (state == STATE_5S_A || state ==  STATE_5S_B) setPeriod(5000);
+    if (state == STATE_3S_A || state ==  STATE_3S_B) setPeriod(300);
+    if (state == STATE_5S_A || state ==  STATE_5S_B) setPeriod(700);
 }
 
 uint8_t getState(void)
