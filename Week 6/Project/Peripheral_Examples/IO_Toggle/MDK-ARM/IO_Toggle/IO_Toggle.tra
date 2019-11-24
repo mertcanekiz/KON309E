@@ -1,0 +1,29 @@
+*** Creating Trace Output File '.\IO_Toggle\IO_Toggle.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\io_toggle\main.o"'
+### List of Objects: adding '".\io_toggle\stm32f0xx_it.o"'
+### List of Objects: adding '".\io_toggle\system_stm32f0xx.o"'
+### List of Objects: adding '".\io_toggle\stm32f0_discovery.o"'
+### List of Objects: adding '".\io_toggle\stm32f0xx_rcc.o"'
+### List of Objects: adding '".\io_toggle\stm32f0xx_misc.o"'
+### List of Objects: adding '".\io_toggle\stm32f0xx_gpio.o"'
+### List of Objects: adding '".\io_toggle\stm32f0xx_syscfg.o"'
+### List of Objects: adding '".\io_toggle\stm32f0xx_exti.o"'
+### List of Objects: adding '".\io_toggle\startup_stm32f0xx.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M0 ".\io_toggle\main.o" ".\io_toggle\stm32f0xx_it.o" ".\io_toggle\system_stm32f0xx.o" ".\io_toggle\stm32f0_discovery.o" ".\io_toggle\stm32f0xx_rcc.o" ".\io_toggle\stm32f0xx_misc.o" ".\io_toggle\stm32f0xx_gpio.o" ".\io_toggle\stm32f0xx_syscfg.o" ".\io_toggle\stm32f0xx_exti.o" ".\io_toggle\startup_stm32f0xx.o" 
+--library_type=microlib --strict --scatter ".\IO_Toggle\IO_Toggle.sct" 
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\IO_Toggle\IO_Toggle.map" -o .\IO_Toggle\IO_Toggle.axf### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\IO_Toggle\IO_Toggle.axf'
+### ADS-LD Command File: '.\IO_Toggle\IO_Toggle.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\IO_Toggle\IO_Toggle.lnp', Handle=0x0000047C
+### Writing '.lnp' file
+### ADS-LD Command file '.\IO_Toggle\IO_Toggle.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

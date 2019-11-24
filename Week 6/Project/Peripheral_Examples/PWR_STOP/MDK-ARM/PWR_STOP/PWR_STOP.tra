@@ -1,0 +1,31 @@
+*** Creating Trace Output File '.\PWR_STOP\PWR_STOP.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\pwr_stop\main.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_it.o"'
+### List of Objects: adding '".\pwr_stop\system_stm32f0xx.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0_discovery.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_rcc.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_misc.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_gpio.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_syscfg.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_exti.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_pwr.o"'
+### List of Objects: adding '".\pwr_stop\stm32f0xx_rtc.o"'
+### List of Objects: adding '".\pwr_stop\startup_stm32f0xx.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M0 ".\pwr_stop\main.o" ".\pwr_stop\stm32f0xx_it.o" ".\pwr_stop\system_stm32f0xx.o" ".\pwr_stop\stm32f0_discovery.o" ".\pwr_stop\stm32f0xx_rcc.o" ".\pwr_stop\stm32f0xx_misc.o" ".\pwr_stop\stm32f0xx_gpio.o" ".\pwr_stop\stm32f0xx_syscfg.o" ".\pwr_stop\stm32f0xx_exti.o" ".\pwr_stop\stm32f0xx_pwr.o" ".\pwr_stop\stm32f0xx_rtc.o" ".\pwr_stop\startup_stm32f0xx.o" 
+--library_type=microlib --strict --scatter ".\PWR_STOP\PWR_STOP.sct" 
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\PWR_STOP\PWR_STOP.map" -o .\PWR_STOP\PWR_STOP.axf### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\PWR_STOP\PWR_STOP.axf'
+### ADS-LD Command File: '.\PWR_STOP\PWR_STOP.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\PWR_STOP\PWR_STOP.lnp', Handle=0x00000340
+### Writing '.lnp' file
+### ADS-LD Command file '.\PWR_STOP\PWR_STOP.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

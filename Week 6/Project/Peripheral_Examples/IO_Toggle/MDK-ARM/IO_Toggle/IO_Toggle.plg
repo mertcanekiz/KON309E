@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\STM32F0Discovery\ST Discovery Cortex M0 SDK\STM32F0-Discovery_FW_V1.0.0\Project\Peripheral_Examples\IO_Toggle\MDK-ARM\IO_Toggle.uvproj
+Project File Date:  07/23/2013
+
+<h2>Output:</h2>
+Load "D:\\STM32F0Discovery\\ST Discovery Cortex M0 SDK\\STM32F0-Discovery_FW_V1.0.0\\Project\\Peripheral_Examples\\IO_Toggle\\MDK-ARM\\IO_Toggle\\IO_Toggle.axf" 
+Erase Done.
+Programming Failed!
+Load "D:\\STM32F0Discovery\\ST Discovery Cortex M0 SDK\\STM32F0-Discovery_FW_V1.0.0\\Project\\Peripheral_Examples\\IO_Toggle\\MDK-ARM\\IO_Toggle\\IO_Toggle.axf" 
+Erase Done.
+Programming Failed!

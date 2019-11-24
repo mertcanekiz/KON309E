@@ -1,0 +1,15 @@
+--cpu Cortex-M0
+".\systick\main.o"
+".\systick\stm32f0xx_it.o"
+".\systick\system_stm32f0xx.o"
+".\systick\stm32f0_discovery.o"
+".\systick\stm32f0xx_rcc.o"
+".\systick\stm32f0xx_misc.o"
+".\systick\stm32f0xx_gpio.o"
+".\systick\stm32f0xx_syscfg.o"
+".\systick\stm32f0xx_exti.o"
+".\systick\startup_stm32f0xx.o"
+--library_type=microlib --strict --scatter ".\Systick\Systick.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Systick\Systick.map" -o .\Systick\Systick.axf
