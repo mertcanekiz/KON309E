@@ -149,8 +149,8 @@ void setPeriod(uint16_t period)
 void setState(uint8_t state)
 {
     currentState = state;
-    if (state == STATE_3S_A || state ==  STATE_3S_B) setPeriod(300);
-    if (state == STATE_5S_A || state ==  STATE_5S_B) setPeriod(700);
+    if (state == STATE_3S_A || state ==  STATE_3S_B) setPeriod(3000);
+    if (state == STATE_5S_A || state ==  STATE_5S_B) setPeriod(5000);
 }
 
 uint8_t getState(void)

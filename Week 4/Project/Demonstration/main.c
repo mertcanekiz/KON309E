@@ -82,7 +82,7 @@ int main(void)
             //
             // Which means that an even numbered state will go to the next state on a button press,
             // whereas an odd numbered state will go to the next state after a button release.
-         
+
             if (state == STATE_OFF_B) {      // If we just came out of OFF state we need to
                 STM_EVAL_LEDOff(LED3);       // restore the alternating behavior of the LEDs.
                 STM_EVAL_LEDOn(LED4);

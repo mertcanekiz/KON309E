@@ -1,0 +1,379 @@
+ARM GAS  /tmp/ccbThM46.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f0xx_it.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.NMI_Handler,"ax",%progbits
+  16              		.align	1
+  17              		.global	NMI_Handler
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	NMI_Handler:
+  25              	.LFB32:
+  26              		.file 1 "Project/Demonstration2/stm32f0xx_it.c"
+   1:Project/Demonstration2/stm32f0xx_it.c **** /**
+   2:Project/Demonstration2/stm32f0xx_it.c ****   ******************************************************************************
+   3:Project/Demonstration2/stm32f0xx_it.c ****   * @file    stm32f0xx_it.c 
+   4:Project/Demonstration2/stm32f0xx_it.c ****   * @author  MCD Application Team
+   5:Project/Demonstration2/stm32f0xx_it.c ****   * @version V1.0.0
+   6:Project/Demonstration2/stm32f0xx_it.c ****   * @date    23-March-2012
+   7:Project/Demonstration2/stm32f0xx_it.c ****   * @brief   Main Interrupt Service Routines.
+   8:Project/Demonstration2/stm32f0xx_it.c ****   *          This file provides template for all exceptions handler and 
+   9:Project/Demonstration2/stm32f0xx_it.c ****   *          peripherals interrupt service routine.
+  10:Project/Demonstration2/stm32f0xx_it.c ****   ******************************************************************************
+  11:Project/Demonstration2/stm32f0xx_it.c ****   * @attention
+  12:Project/Demonstration2/stm32f0xx_it.c ****   *
+  13:Project/Demonstration2/stm32f0xx_it.c ****   * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  14:Project/Demonstration2/stm32f0xx_it.c ****   *
+  15:Project/Demonstration2/stm32f0xx_it.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  16:Project/Demonstration2/stm32f0xx_it.c ****   * You may not use this file except in compliance with the License.
+  17:Project/Demonstration2/stm32f0xx_it.c ****   * You may obtain a copy of the License at:
+  18:Project/Demonstration2/stm32f0xx_it.c ****   *
+  19:Project/Demonstration2/stm32f0xx_it.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  20:Project/Demonstration2/stm32f0xx_it.c ****   *
+  21:Project/Demonstration2/stm32f0xx_it.c ****   * Unless required by applicable law or agreed to in writing, software 
+  22:Project/Demonstration2/stm32f0xx_it.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  23:Project/Demonstration2/stm32f0xx_it.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  24:Project/Demonstration2/stm32f0xx_it.c ****   * See the License for the specific language governing permissions and
+  25:Project/Demonstration2/stm32f0xx_it.c ****   * limitations under the License.
+  26:Project/Demonstration2/stm32f0xx_it.c ****   *
+  27:Project/Demonstration2/stm32f0xx_it.c ****   ******************************************************************************
+  28:Project/Demonstration2/stm32f0xx_it.c ****   */
+  29:Project/Demonstration2/stm32f0xx_it.c **** 
+  30:Project/Demonstration2/stm32f0xx_it.c **** /* Includes ------------------------------------------------------------------*/
+  31:Project/Demonstration2/stm32f0xx_it.c **** #include "stm32f0xx_it.h"
+  32:Project/Demonstration2/stm32f0xx_it.c **** #include "main.h"
+ARM GAS  /tmp/ccbThM46.s 			page 2
+
+
+  33:Project/Demonstration2/stm32f0xx_it.c **** 
+  34:Project/Demonstration2/stm32f0xx_it.c **** /** @addtogroup STM32F0-Discovery_Demo
+  35:Project/Demonstration2/stm32f0xx_it.c ****   * @{
+  36:Project/Demonstration2/stm32f0xx_it.c ****   */
+  37:Project/Demonstration2/stm32f0xx_it.c **** 
+  38:Project/Demonstration2/stm32f0xx_it.c **** /** @addtogroup STM32F0XX_IT
+  39:Project/Demonstration2/stm32f0xx_it.c ****   * @brief Interrupts driver modules
+  40:Project/Demonstration2/stm32f0xx_it.c ****   * @{
+  41:Project/Demonstration2/stm32f0xx_it.c ****   */
+  42:Project/Demonstration2/stm32f0xx_it.c **** 
+  43:Project/Demonstration2/stm32f0xx_it.c **** /* Private typedef -----------------------------------------------------------*/
+  44:Project/Demonstration2/stm32f0xx_it.c **** /* Private define ------------------------------------------------------------*/
+  45:Project/Demonstration2/stm32f0xx_it.c **** /* Private macro -------------------------------------------------------------*/
+  46:Project/Demonstration2/stm32f0xx_it.c **** /* Private variables ---------------------------------------------------------*/
+  47:Project/Demonstration2/stm32f0xx_it.c **** /* Private function prototypes -----------------------------------------------*/
+  48:Project/Demonstration2/stm32f0xx_it.c **** /* Private functions ---------------------------------------------------------*/
+  49:Project/Demonstration2/stm32f0xx_it.c **** 
+  50:Project/Demonstration2/stm32f0xx_it.c **** /******************************************************************************/
+  51:Project/Demonstration2/stm32f0xx_it.c **** /*            Cortex-M0 Processor Exceptions Handlers                         */
+  52:Project/Demonstration2/stm32f0xx_it.c **** /******************************************************************************/
+  53:Project/Demonstration2/stm32f0xx_it.c **** 
+  54:Project/Demonstration2/stm32f0xx_it.c **** /**
+  55:Project/Demonstration2/stm32f0xx_it.c ****   * @brief  This function handles NMI exception.
+  56:Project/Demonstration2/stm32f0xx_it.c ****   * @param  None
+  57:Project/Demonstration2/stm32f0xx_it.c ****   * @retval None
+  58:Project/Demonstration2/stm32f0xx_it.c ****   */
+  59:Project/Demonstration2/stm32f0xx_it.c **** void NMI_Handler(void)
+  60:Project/Demonstration2/stm32f0xx_it.c **** {
+  27              		.loc 1 60 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  61:Project/Demonstration2/stm32f0xx_it.c **** }
+  32              		.loc 1 61 1 view .LVU1
+  33              		@ sp needed
+  34 0000 7047     		bx	lr
+  35              		.cfi_endproc
+  36              	.LFE32:
+  38              		.section	.text.HardFault_Handler,"ax",%progbits
+  39              		.align	1
+  40              		.global	HardFault_Handler
+  41              		.syntax unified
+  42              		.code	16
+  43              		.thumb_func
+  44              		.fpu softvfp
+  46              	HardFault_Handler:
+  47              	.LFB33:
+  62:Project/Demonstration2/stm32f0xx_it.c **** 
+  63:Project/Demonstration2/stm32f0xx_it.c **** /**
+  64:Project/Demonstration2/stm32f0xx_it.c ****   * @brief  This function handles Hard Fault exception.
+  65:Project/Demonstration2/stm32f0xx_it.c ****   * @param  None
+  66:Project/Demonstration2/stm32f0xx_it.c ****   * @retval None
+  67:Project/Demonstration2/stm32f0xx_it.c ****   */
+  68:Project/Demonstration2/stm32f0xx_it.c **** void HardFault_Handler(void)
+  69:Project/Demonstration2/stm32f0xx_it.c **** {
+  48              		.loc 1 69 1 view -0
+ARM GAS  /tmp/ccbThM46.s 			page 3
+
+
+  49              		.cfi_startproc
+  50              		@ Volatile: function does not return.
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+  54              	.L3:
+  70:Project/Demonstration2/stm32f0xx_it.c ****   /* Go to infinite loop when Hard Fault exception occurs */
+  71:Project/Demonstration2/stm32f0xx_it.c ****   while (1)
+  55              		.loc 1 71 3 discriminator 1 view .LVU3
+  72:Project/Demonstration2/stm32f0xx_it.c ****   {
+  73:Project/Demonstration2/stm32f0xx_it.c ****   }
+  56              		.loc 1 73 3 discriminator 1 view .LVU4
+  71:Project/Demonstration2/stm32f0xx_it.c ****   {
+  57              		.loc 1 71 9 discriminator 1 view .LVU5
+  58 0000 FEE7     		b	.L3
+  59              		.cfi_endproc
+  60              	.LFE33:
+  62              		.section	.text.SVC_Handler,"ax",%progbits
+  63              		.align	1
+  64              		.global	SVC_Handler
+  65              		.syntax unified
+  66              		.code	16
+  67              		.thumb_func
+  68              		.fpu softvfp
+  70              	SVC_Handler:
+  71              	.LFB34:
+  74:Project/Demonstration2/stm32f0xx_it.c **** }
+  75:Project/Demonstration2/stm32f0xx_it.c **** 
+  76:Project/Demonstration2/stm32f0xx_it.c **** /**
+  77:Project/Demonstration2/stm32f0xx_it.c ****   * @brief  This function handles SVCall exception.
+  78:Project/Demonstration2/stm32f0xx_it.c ****   * @param  None
+  79:Project/Demonstration2/stm32f0xx_it.c ****   * @retval None
+  80:Project/Demonstration2/stm32f0xx_it.c ****   */
+  81:Project/Demonstration2/stm32f0xx_it.c **** void SVC_Handler(void)
+  82:Project/Demonstration2/stm32f0xx_it.c **** {
+  72              		.loc 1 82 1 view -0
+  73              		.cfi_startproc
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76              		@ link register save eliminated.
+  83:Project/Demonstration2/stm32f0xx_it.c **** }
+  77              		.loc 1 83 1 view .LVU7
+  78              		@ sp needed
+  79 0000 7047     		bx	lr
+  80              		.cfi_endproc
+  81              	.LFE34:
+  83              		.section	.text.PendSV_Handler,"ax",%progbits
+  84              		.align	1
+  85              		.global	PendSV_Handler
+  86              		.syntax unified
+  87              		.code	16
+  88              		.thumb_func
+  89              		.fpu softvfp
+  91              	PendSV_Handler:
+  92              	.LFB35:
+  84:Project/Demonstration2/stm32f0xx_it.c **** 
+  85:Project/Demonstration2/stm32f0xx_it.c **** /**
+ARM GAS  /tmp/ccbThM46.s 			page 4
+
+
+  86:Project/Demonstration2/stm32f0xx_it.c ****   * @brief  This function handles PendSVC exception.
+  87:Project/Demonstration2/stm32f0xx_it.c ****   * @param  None
+  88:Project/Demonstration2/stm32f0xx_it.c ****   * @retval None
+  89:Project/Demonstration2/stm32f0xx_it.c ****   */
+  90:Project/Demonstration2/stm32f0xx_it.c **** void PendSV_Handler(void)
+  91:Project/Demonstration2/stm32f0xx_it.c **** {
+  93              		.loc 1 91 1 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97              		@ link register save eliminated.
+  92:Project/Demonstration2/stm32f0xx_it.c **** }
+  98              		.loc 1 92 1 view .LVU9
+  99              		@ sp needed
+ 100 0000 7047     		bx	lr
+ 101              		.cfi_endproc
+ 102              	.LFE35:
+ 104              		.section	.text.SysTick_Handler,"ax",%progbits
+ 105              		.align	1
+ 106              		.global	SysTick_Handler
+ 107              		.syntax unified
+ 108              		.code	16
+ 109              		.thumb_func
+ 110              		.fpu softvfp
+ 112              	SysTick_Handler:
+ 113              	.LFB36:
+  93:Project/Demonstration2/stm32f0xx_it.c **** 
+  94:Project/Demonstration2/stm32f0xx_it.c **** /**
+  95:Project/Demonstration2/stm32f0xx_it.c ****   * @brief  This function handles SysTick Handler.
+  96:Project/Demonstration2/stm32f0xx_it.c ****   * @param  None
+  97:Project/Demonstration2/stm32f0xx_it.c ****   * @retval None
+  98:Project/Demonstration2/stm32f0xx_it.c ****   */
+  99:Project/Demonstration2/stm32f0xx_it.c **** void SysTick_Handler(void)
+ 100:Project/Demonstration2/stm32f0xx_it.c **** {
+ 114              		.loc 1 100 1 view -0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118 0000 10B5     		push	{r4, lr}
+ 119              	.LCFI0:
+ 120              		.cfi_def_cfa_offset 8
+ 121              		.cfi_offset 4, -8
+ 122              		.cfi_offset 14, -4
+ 101:Project/Demonstration2/stm32f0xx_it.c ****   TimingDelay_Decrement();
+ 123              		.loc 1 101 3 view .LVU11
+ 124 0002 FFF7FEFF 		bl	TimingDelay_Decrement
+ 125              	.LVL0:
+ 102:Project/Demonstration2/stm32f0xx_it.c **** }
+ 126              		.loc 1 102 1 is_stmt 0 view .LVU12
+ 127              		@ sp needed
+ 128 0006 10BD     		pop	{r4, pc}
+ 129              		.cfi_endproc
+ 130              	.LFE36:
+ 132              		.section	.text.TIM3_IRQHandler,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	TIM3_IRQHandler
+ 135              		.syntax unified
+ARM GAS  /tmp/ccbThM46.s 			page 5
+
+
+ 136              		.code	16
+ 137              		.thumb_func
+ 138              		.fpu softvfp
+ 140              	TIM3_IRQHandler:
+ 141              	.LFB37:
+ 103:Project/Demonstration2/stm32f0xx_it.c **** 
+ 104:Project/Demonstration2/stm32f0xx_it.c **** /******************************************************************************/
+ 105:Project/Demonstration2/stm32f0xx_it.c **** /*                 STM32F0xx Peripherals Interrupt Handlers                   */
+ 106:Project/Demonstration2/stm32f0xx_it.c **** /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+ 107:Project/Demonstration2/stm32f0xx_it.c **** /*  available peripheral interrupt handler's name please refer to the startup */
+ 108:Project/Demonstration2/stm32f0xx_it.c **** /*  file (startup_stm32f0xx.s).                                               */
+ 109:Project/Demonstration2/stm32f0xx_it.c **** /******************************************************************************/
+ 110:Project/Demonstration2/stm32f0xx_it.c **** void TIM3_IRQHandler(void)
+ 111:Project/Demonstration2/stm32f0xx_it.c **** {
+ 142              		.loc 1 111 1 is_stmt 1 view -0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146 0000 10B5     		push	{r4, lr}
+ 147              	.LCFI1:
+ 148              		.cfi_def_cfa_offset 8
+ 149              		.cfi_offset 4, -8
+ 150              		.cfi_offset 14, -4
+ 112:Project/Demonstration2/stm32f0xx_it.c ****     TIM_ClearITPendingBit(TIM3, TIM_IT_CC3);
+ 151              		.loc 1 112 5 view .LVU14
+ 152 0002 0821     		movs	r1, #8
+ 153 0004 0F48     		ldr	r0, .L12
+ 154 0006 FFF7FEFF 		bl	TIM_ClearITPendingBit
+ 155              	.LVL1:
+ 113:Project/Demonstration2/stm32f0xx_it.c ****     
+ 114:Project/Demonstration2/stm32f0xx_it.c ****     if (getState() == STATE_3S_A || getState() == STATE_3S_B) {
+ 156              		.loc 1 114 5 view .LVU15
+ 157              		.loc 1 114 9 is_stmt 0 view .LVU16
+ 158 000a FFF7FEFF 		bl	getState
+ 159              	.LVL2:
+ 160              		.loc 1 114 8 view .LVU17
+ 161 000e 0228     		cmp	r0, #2
+ 162 0010 03D0     		beq	.L8
+ 163              		.loc 1 114 37 discriminator 1 view .LVU18
+ 164 0012 FFF7FEFF 		bl	getState
+ 165              	.LVL3:
+ 166              		.loc 1 114 34 discriminator 1 view .LVU19
+ 167 0016 0328     		cmp	r0, #3
+ 168 0018 08D1     		bne	.L9
+ 169              	.L8:
+ 115:Project/Demonstration2/stm32f0xx_it.c ****         setState(STATE_5S_A);
+ 170              		.loc 1 115 9 is_stmt 1 view .LVU20
+ 171 001a 0420     		movs	r0, #4
+ 172 001c FFF7FEFF 		bl	setState
+ 173              	.LVL4:
+ 174              	.L10:
+ 116:Project/Demonstration2/stm32f0xx_it.c ****     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
+ 117:Project/Demonstration2/stm32f0xx_it.c ****         setState(STATE_3S_A);
+ 118:Project/Demonstration2/stm32f0xx_it.c ****     }
+ 119:Project/Demonstration2/stm32f0xx_it.c ****     TIM_DeInit(TIM3);
+ 175              		.loc 1 119 5 view .LVU21
+ 176 0020 0848     		ldr	r0, .L12
+ARM GAS  /tmp/ccbThM46.s 			page 6
+
+
+ 177 0022 FFF7FEFF 		bl	TIM_DeInit
+ 178              	.LVL5:
+ 120:Project/Demonstration2/stm32f0xx_it.c ****     TIM_Config();
+ 179              		.loc 1 120 5 view .LVU22
+ 180 0026 FFF7FEFF 		bl	TIM_Config
+ 181              	.LVL6:
+ 121:Project/Demonstration2/stm32f0xx_it.c **** }
+ 182              		.loc 1 121 1 is_stmt 0 view .LVU23
+ 183              		@ sp needed
+ 184 002a 10BD     		pop	{r4, pc}
+ 185              	.L9:
+ 116:Project/Demonstration2/stm32f0xx_it.c ****     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
+ 186              		.loc 1 116 12 is_stmt 1 view .LVU24
+ 116:Project/Demonstration2/stm32f0xx_it.c ****     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
+ 187              		.loc 1 116 16 is_stmt 0 view .LVU25
+ 188 002c FFF7FEFF 		bl	getState
+ 189              	.LVL7:
+ 116:Project/Demonstration2/stm32f0xx_it.c ****     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
+ 190              		.loc 1 116 15 view .LVU26
+ 191 0030 0428     		cmp	r0, #4
+ 192 0032 03D0     		beq	.L11
+ 116:Project/Demonstration2/stm32f0xx_it.c ****     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
+ 193              		.loc 1 116 44 discriminator 1 view .LVU27
+ 194 0034 FFF7FEFF 		bl	getState
+ 195              	.LVL8:
+ 116:Project/Demonstration2/stm32f0xx_it.c ****     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
+ 196              		.loc 1 116 41 discriminator 1 view .LVU28
+ 197 0038 0528     		cmp	r0, #5
+ 198 003a F1D1     		bne	.L10
+ 199              	.L11:
+ 117:Project/Demonstration2/stm32f0xx_it.c ****     }
+ 200              		.loc 1 117 9 is_stmt 1 view .LVU29
+ 201 003c 0220     		movs	r0, #2
+ 202 003e FFF7FEFF 		bl	setState
+ 203              	.LVL9:
+ 204 0042 EDE7     		b	.L10
+ 205              	.L13:
+ 206              		.align	2
+ 207              	.L12:
+ 208 0044 00040040 		.word	1073742848
+ 209              		.cfi_endproc
+ 210              	.LFE37:
+ 212              		.text
+ 213              	.Letext0:
+ 214              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 215              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 216              		.file 4 "./Libraries/CMSIS/ST/STM32F0xx/Include/stm32f0xx.h"
+ 217              		.file 5 "./Libraries/STM32F0xx_StdPeriph_Driver/inc/stm32f0xx_tim.h"
+ 218              		.file 6 "Project/Demonstration2/main.h"
+ 219              		.file 7 "./Libraries/CMSIS/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ARM GAS  /tmp/ccbThM46.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f0xx_it.c
+     /tmp/ccbThM46.s:16     .text.NMI_Handler:0000000000000000 $t
+     /tmp/ccbThM46.s:24     .text.NMI_Handler:0000000000000000 NMI_Handler
+     /tmp/ccbThM46.s:39     .text.HardFault_Handler:0000000000000000 $t
+     /tmp/ccbThM46.s:46     .text.HardFault_Handler:0000000000000000 HardFault_Handler
+     /tmp/ccbThM46.s:63     .text.SVC_Handler:0000000000000000 $t
+     /tmp/ccbThM46.s:70     .text.SVC_Handler:0000000000000000 SVC_Handler
+     /tmp/ccbThM46.s:84     .text.PendSV_Handler:0000000000000000 $t
+     /tmp/ccbThM46.s:91     .text.PendSV_Handler:0000000000000000 PendSV_Handler
+     /tmp/ccbThM46.s:105    .text.SysTick_Handler:0000000000000000 $t
+     /tmp/ccbThM46.s:112    .text.SysTick_Handler:0000000000000000 SysTick_Handler
+     /tmp/ccbThM46.s:133    .text.TIM3_IRQHandler:0000000000000000 $t
+     /tmp/ccbThM46.s:140    .text.TIM3_IRQHandler:0000000000000000 TIM3_IRQHandler
+     /tmp/ccbThM46.s:208    .text.TIM3_IRQHandler:0000000000000044 $d
+
+UNDEFINED SYMBOLS
+TimingDelay_Decrement
+TIM_ClearITPendingBit
+getState
+setState
+TIM_DeInit
+TIM_Config

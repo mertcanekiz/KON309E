@@ -1,0 +1,2769 @@
+ARM GAS  /tmp/cc8DdBWC.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f0xx_adc.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.ADC_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	ADC_DeInit
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	ADC_DeInit:
+  25              	.LVL0:
+  26              	.LFB32:
+  27              		.file 1 "Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c"
+   1:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+   2:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ******************************************************************************
+   3:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @file    stm32f0xx_adc.c
+   4:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @author  MCD Application Team
+   5:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @version V1.0.0
+   6:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @date    23-March-2012
+   7:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *          functionalities of the Analog to Digital Convertor (ADC) peripheral:
+   9:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + Initialization and Configuration
+  10:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + Power saving
+  11:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + Analog Watchdog configuration
+  12:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + Temperature Sensor, Vrefint (Internal Reference Voltage) and 
+  13:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *             Vbat (Voltage battery) management 
+  14:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + ADC Channels Configuration
+  15:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + ADC Channels DMA Configuration
+  16:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           + Interrupts and flags management
+  17:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  18:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *  @verbatim
+  19:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** ================================================================================
+  20:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                       ##### How to use this driver #####
+  21:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** ================================================================================
+  22:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..]
+  23:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (#) Enable the ADC interface clock using 
+  24:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); 
+  25:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (#) ADC pins configuration
+  26:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****        (++) Enable the clock for the ADC GPIOs using the following function:
+  27:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****             RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOx, ENABLE);   
+  28:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****        (++) Configure these ADC pins in analog mode using GPIO_Init();  
+  29:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (#) Configure the ADC conversion resolution, data alignment, external
+  30:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         trigger and edge, scan direction and Enable/Disable the continuous mode
+  31:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         using the ADC_Init() function.
+ARM GAS  /tmp/cc8DdBWC.s 			page 2
+
+
+  32:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (#) Activate the ADC peripheral using ADC_Cmd() function.
+  33:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  34:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     *** ADC channels group configuration ***
+  35:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ============================================
+  36:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] 
+  37:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To configure the ADC channels features, use ADC_Init() and 
+  38:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         ADC_ChannelConfig() functions.
+  39:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To activate the continuous mode, use the ADC_ContinuousModeCmd()
+  40:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         function.
+  41:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To activate the Discontinuous mode, use the ADC_DiscModeCmd() functions. 
+  42:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To activate the overrun mode, use the ADC_OverrunModeCmd() functions.
+  43:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To activate the calibration mode, use the ADC_GetCalibrationFactor() functions.
+  44:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To read the ADC converted values, use the ADC_GetConversionValue()
+  45:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         function.
+  46:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  47:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     *** DMA for ADC channels features configuration ***
+  48:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     =============================================================
+  49:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] 
+  50:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To enable the DMA mode for ADC channels group, use the ADC_DMACmd() function.
+  51:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     (+) To configure the DMA transfer request, use ADC_DMARequestModeConfig() function.
+  52:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  53:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *  @endverbatim
+  54:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  55:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ******************************************************************************
+  56:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @attention
+  57:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  58:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  59:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  60:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  61:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * You may not use this file except in compliance with the License.
+  62:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * You may obtain a copy of the License at:
+  63:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  64:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  65:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  66:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * Unless required by applicable law or agreed to in writing, software 
+  67:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  68:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  69:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * See the License for the specific language governing permissions and
+  70:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * limitations under the License.
+  71:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *
+  72:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ******************************************************************************
+  73:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+  74:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  75:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Includes ------------------------------------------------------------------*/
+  76:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** #include "stm32f0xx_adc.h"
+  77:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** #include "stm32f0xx_rcc.h"
+  78:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  79:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @addtogroup STM32F0xx_StdPeriph_Driver
+  80:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+  81:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+  82:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  83:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC 
+  84:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief ADC driver modules
+  85:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+  86:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+  87:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  88:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Private typedef -----------------------------------------------------------*/
+ARM GAS  /tmp/cc8DdBWC.s 			page 3
+
+
+  89:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Private define ------------------------------------------------------------*/
+  90:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* ADC CFGR mask */
+  91:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** #define CFGR1_CLEAR_MASK           ((uint32_t)0xFFFFD203)
+  92:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  93:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Calibration time out */
+  94:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** #define CALIBRATION_TIMEOUT       ((uint32_t)0x0000F000)
+  95:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  96:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Private macro -------------------------------------------------------------*/
+  97:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Private variables ---------------------------------------------------------*/
+  98:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Private function prototypes -----------------------------------------------*/
+  99:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /* Private functions ---------------------------------------------------------*/
+ 100:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 101:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Private_Functions
+ 102:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 103:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 104:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 105:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group1 Initialization and Configuration functions
+ 106:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief   Initialization and Configuration functions 
+ 107:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 108:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim
+ 109:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 110:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****           ##### Initialization and Configuration functions #####
+ 111:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 112:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides functions allowing to:
+ 113:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) Initialize and configure the ADC Prescaler
+ 114:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) ADC Conversion Resolution (12bit..6bit)
+ 115:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) ADC Continuous Conversion Mode (Continuous or Single conversion)
+ 116:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) External trigger Edge and source 
+ 117:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) Converted data alignment (left or right)
+ 118:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) The direction in which the channels will be scanned in the sequence
+ 119:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+) Enable or disable the ADC peripheral
+ 120:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****    
+ 121:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+ 122:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 123:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 124:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 125:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 126:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Deinitializes ADC1 peripheral registers to their default reset values.
+ 127:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC peripheral.
+ 128:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 129:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 130:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_DeInit(ADC_TypeDef* ADCx)
+ 131:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+  28              		.loc 1 131 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 131 1 is_stmt 0 view .LVU1
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+ 132:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 133:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+  38              		.loc 1 133 3 is_stmt 1 view .LVU2
+ 134:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 4
+
+
+ 135:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if(ADCx == ADC1)
+  39              		.loc 1 135 3 view .LVU3
+  40              		.loc 1 135 5 is_stmt 0 view .LVU4
+  41 0002 074B     		ldr	r3, .L4
+  42 0004 9842     		cmp	r0, r3
+  43 0006 00D0     		beq	.L3
+  44              	.LVL1:
+  45              	.L1:
+ 136:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 137:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable ADC1 reset state */
+ 138:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1, ENABLE);
+ 139:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 140:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Release ADC1 from reset state */
+ 141:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC1, DISABLE);
+ 142:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 143:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+  46              		.loc 1 143 1 view .LVU5
+  47              		@ sp needed
+  48 0008 10BD     		pop	{r4, pc}
+  49              	.LVL2:
+  50              	.L3:
+ 138:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  51              		.loc 1 138 5 is_stmt 1 view .LVU6
+  52 000a 8024     		movs	r4, #128
+  53 000c A400     		lsls	r4, r4, #2
+  54 000e 0121     		movs	r1, #1
+  55 0010 2000     		movs	r0, r4
+  56              	.LVL3:
+ 138:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+  57              		.loc 1 138 5 is_stmt 0 view .LVU7
+  58 0012 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  59              	.LVL4:
+ 141:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+  60              		.loc 1 141 5 is_stmt 1 view .LVU8
+  61 0016 0021     		movs	r1, #0
+  62 0018 2000     		movs	r0, r4
+  63 001a FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  64              	.LVL5:
+  65              		.loc 1 143 1 is_stmt 0 view .LVU9
+  66 001e F3E7     		b	.L1
+  67              	.L5:
+  68              		.align	2
+  69              	.L4:
+  70 0020 00240140 		.word	1073816576
+  71              		.cfi_endproc
+  72              	.LFE32:
+  74              		.section	.text.ADC_Init,"ax",%progbits
+  75              		.align	1
+  76              		.global	ADC_Init
+  77              		.syntax unified
+  78              		.code	16
+  79              		.thumb_func
+  80              		.fpu softvfp
+  82              	ADC_Init:
+  83              	.LVL6:
+  84              	.LFB33:
+ 144:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 5
+
+
+ 145:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 146:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Initializes the ADCx peripheral according to the specified parameters
+ 147:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         in the ADC_InitStruct.
+ 148:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   This function is used to configure the global features of the ADC ( 
+ 149:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         Resolution, Data Alignment, continuous mode activation, External 
+ 150:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         trigger source and edge, Sequence Scan Direction).   
+ 151:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC peripheral.
+ 152:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_InitStruct: pointer to an ADC_InitTypeDef structure that contains 
+ 153:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         the configuration information for the specified ADC peripheral.
+ 154:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 155:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 156:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct)
+ 157:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+  85              		.loc 1 157 1 is_stmt 1 view -0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89              		.loc 1 157 1 is_stmt 0 view .LVU11
+  90 0000 10B5     		push	{r4, lr}
+  91              	.LCFI1:
+  92              		.cfi_def_cfa_offset 8
+  93              		.cfi_offset 4, -8
+  94              		.cfi_offset 14, -4
+ 158:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   uint32_t tmpreg = 0;
+  95              		.loc 1 158 3 is_stmt 1 view .LVU12
+  96              	.LVL7:
+ 159:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 160:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 161:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+  97              		.loc 1 161 3 view .LVU13
+ 162:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_RESOLUTION(ADC_InitStruct->ADC_Resolution));
+  98              		.loc 1 162 3 view .LVU14
+ 163:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(ADC_InitStruct->ADC_ContinuousConvMode));
+  99              		.loc 1 163 3 view .LVU15
+ 164:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_EXT_TRIG_EDGE(ADC_InitStruct->ADC_ExternalTrigConvEdge));
+ 100              		.loc 1 164 3 view .LVU16
+ 165:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_EXTERNAL_TRIG_CONV(ADC_InitStruct->ADC_ExternalTrigConv));
+ 101              		.loc 1 165 3 view .LVU17
+ 166:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_DATA_ALIGN(ADC_InitStruct->ADC_DataAlign));
+ 102              		.loc 1 166 3 view .LVU18
+ 167:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_SCAN_DIRECTION(ADC_InitStruct->ADC_ScanDirection)); 
+ 103              		.loc 1 167 3 view .LVU19
+ 168:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 169:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Get the ADCx CFGR value */
+ 170:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg = ADCx->CFGR1;
+ 104              		.loc 1 170 3 view .LVU20
+ 105              		.loc 1 170 10 is_stmt 0 view .LVU21
+ 106 0002 C368     		ldr	r3, [r0, #12]
+ 107              	.LVL8:
+ 171:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 172:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Clear SCANDIR, RES[1:0], ALIGN, EXTSEL[2:0], EXTEN[1:0] and CONT bits */
+ 173:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg &= CFGR1_CLEAR_MASK;
+ 108              		.loc 1 173 3 is_stmt 1 view .LVU22
+ 109              		.loc 1 173 10 is_stmt 0 view .LVU23
+ 110 0004 084A     		ldr	r2, .L7
+ 111 0006 1A40     		ands	r2, r3
+ 112              	.LVL9:
+ARM GAS  /tmp/cc8DdBWC.s 			page 6
+
+
+ 174:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 175:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /*---------------------------- ADCx CFGR Configuration ---------------------*/
+ 176:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 177:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set RES[1:0] bits according to ADC_Resolution value */
+ 178:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set CONT bit according to ADC_ContinuousConvMode value */
+ 179:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set EXTEN[1:0] bits according to ADC_ExternalTrigConvEdge value */
+ 180:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set EXTSEL[2:0] bits according to ADC_ExternalTrigConv value */
+ 181:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set ALIGN bit according to ADC_DataAlign value */
+ 182:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set SCANDIR bit according to ADC_ScanDirection value */
+ 183:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  
+ 184:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg  |= (uint32_t)(ADC_InitStruct->ADC_Resolution | ((uint32_t)(ADC_InitStruct->ADC_Continuous
+ 113              		.loc 1 184 3 is_stmt 1 view .LVU24
+ 114              		.loc 1 184 84 is_stmt 0 view .LVU25
+ 115 0008 0B79     		ldrb	r3, [r1, #4]
+ 116              		.loc 1 184 110 view .LVU26
+ 117 000a 5B03     		lsls	r3, r3, #13
+ 118              		.loc 1 184 56 view .LVU27
+ 119 000c 0C68     		ldr	r4, [r1]
+ 120 000e 2343     		orrs	r3, r4
+ 121              		.loc 1 184 117 view .LVU28
+ 122 0010 8C68     		ldr	r4, [r1, #8]
+ 123 0012 2343     		orrs	r3, r4
+ 185:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_InitStruct->ADC_ExternalTrigConvEdge | ADC_InitStruct->ADC_ExternalTrigConv |
+ 124              		.loc 1 185 55 view .LVU29
+ 125 0014 CC68     		ldr	r4, [r1, #12]
+ 126 0016 2343     		orrs	r3, r4
+ 127              		.loc 1 185 94 view .LVU30
+ 128 0018 0C69     		ldr	r4, [r1, #16]
+ 129 001a 2343     		orrs	r3, r4
+ 186:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_InitStruct->ADC_DataAlign | ADC_InitStruct->ADC_ScanDirection);
+ 130              		.loc 1 186 60 view .LVU31
+ 131 001c 4969     		ldr	r1, [r1, #20]
+ 132              	.LVL10:
+ 184:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_InitStruct->ADC_ExternalTrigConvEdge | ADC_InitStruct->ADC_ExternalTrigConv |
+ 133              		.loc 1 184 14 view .LVU32
+ 134 001e 0B43     		orrs	r3, r1
+ 184:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_InitStruct->ADC_ExternalTrigConvEdge | ADC_InitStruct->ADC_ExternalTrigConv |
+ 135              		.loc 1 184 11 view .LVU33
+ 136 0020 1343     		orrs	r3, r2
+ 137              	.LVL11:
+ 187:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 188:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Write to ADCx CFGR */
+ 189:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CFGR1 = tmpreg;
+ 138              		.loc 1 189 3 is_stmt 1 view .LVU34
+ 139              		.loc 1 189 15 is_stmt 0 view .LVU35
+ 140 0022 C360     		str	r3, [r0, #12]
+ 190:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 141              		.loc 1 190 1 view .LVU36
+ 142              		@ sp needed
+ 143 0024 10BD     		pop	{r4, pc}
+ 144              	.L8:
+ 145 0026 C046     		.align	2
+ 146              	.L7:
+ 147 0028 03D2FFFF 		.word	-11773
+ 148              		.cfi_endproc
+ 149              	.LFE33:
+ 151              		.section	.text.ADC_StructInit,"ax",%progbits
+ARM GAS  /tmp/cc8DdBWC.s 			page 7
+
+
+ 152              		.align	1
+ 153              		.global	ADC_StructInit
+ 154              		.syntax unified
+ 155              		.code	16
+ 156              		.thumb_func
+ 157              		.fpu softvfp
+ 159              	ADC_StructInit:
+ 160              	.LVL12:
+ 161              	.LFB34:
+ 191:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 192:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 193:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Fills each ADC_InitStruct member with its default value.
+ 194:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   This function is used to initialize the global features of the ADC ( 
+ 195:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         Resolution, Data Alignment, continuous mode activation, External 
+ 196:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         trigger source and edge, Sequence Scan Direction).
+ 197:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_InitStruct: pointer to an ADC_InitTypeDef structure which will 
+ 198:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         be initialized.
+ 199:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 200:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 201:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_StructInit(ADC_InitTypeDef* ADC_InitStruct)
+ 202:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 162              		.loc 1 202 1 is_stmt 1 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 203:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Reset ADC init structure parameters values */
+ 204:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Initialize the ADC_Resolution member */
+ 205:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADC_InitStruct->ADC_Resolution = ADC_Resolution_12b;
+ 167              		.loc 1 205 3 view .LVU38
+ 168              		.loc 1 205 34 is_stmt 0 view .LVU39
+ 169 0000 0023     		movs	r3, #0
+ 170 0002 0360     		str	r3, [r0]
+ 206:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 207:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****    /* Initialize the ADC_ContinuousConvMode member */
+ 208:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADC_InitStruct->ADC_ContinuousConvMode = DISABLE;
+ 171              		.loc 1 208 3 is_stmt 1 view .LVU40
+ 172              		.loc 1 208 42 is_stmt 0 view .LVU41
+ 173 0004 0371     		strb	r3, [r0, #4]
+ 209:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 210:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Initialize the ADC_ExternalTrigConvEdge member */
+ 211:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADC_InitStruct->ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
+ 174              		.loc 1 211 3 is_stmt 1 view .LVU42
+ 175              		.loc 1 211 44 is_stmt 0 view .LVU43
+ 176 0006 8360     		str	r3, [r0, #8]
+ 212:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 213:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Initialize the ADC_ExternalTrigConv member */
+ 214:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADC_InitStruct->ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_TRGO;
+ 177              		.loc 1 214 3 is_stmt 1 view .LVU44
+ 178              		.loc 1 214 40 is_stmt 0 view .LVU45
+ 179 0008 C360     		str	r3, [r0, #12]
+ 215:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 216:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Initialize the ADC_DataAlign member */
+ 217:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADC_InitStruct->ADC_DataAlign = ADC_DataAlign_Right;
+ 180              		.loc 1 217 3 is_stmt 1 view .LVU46
+ 181              		.loc 1 217 33 is_stmt 0 view .LVU47
+ 182 000a 0361     		str	r3, [r0, #16]
+ARM GAS  /tmp/cc8DdBWC.s 			page 8
+
+
+ 218:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 219:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Initialize the ADC_ScanDirection member */
+ 220:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADC_InitStruct->ADC_ScanDirection = ADC_ScanDirection_Upward;
+ 183              		.loc 1 220 3 is_stmt 1 view .LVU48
+ 184              		.loc 1 220 37 is_stmt 0 view .LVU49
+ 185 000c 4361     		str	r3, [r0, #20]
+ 221:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 186              		.loc 1 221 1 view .LVU50
+ 187              		@ sp needed
+ 188 000e 7047     		bx	lr
+ 189              		.cfi_endproc
+ 190              	.LFE34:
+ 192              		.section	.text.ADC_Cmd,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	ADC_Cmd
+ 195              		.syntax unified
+ 196              		.code	16
+ 197              		.thumb_func
+ 198              		.fpu softvfp
+ 200              	ADC_Cmd:
+ 201              	.LVL13:
+ 202              	.LFB35:
+ 222:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 223:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 224:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the specified ADC peripheral.
+ 225:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 226:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the ADCx peripheral. 
+ 227:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 228:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 229:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 230:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 231:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 203              		.loc 1 231 1 is_stmt 1 view -0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              		@ link register save eliminated.
+ 232:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 233:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 208              		.loc 1 233 3 view .LVU52
+ 234:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 209              		.loc 1 234 3 view .LVU53
+ 235:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 236:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 210              		.loc 1 236 3 view .LVU54
+ 211              		.loc 1 236 6 is_stmt 0 view .LVU55
+ 212 0000 0029     		cmp	r1, #0
+ 213 0002 04D0     		beq	.L11
+ 237:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 238:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Set the ADEN bit to Enable the ADC peripheral */
+ 239:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CR |= (uint32_t)ADC_CR_ADEN;
+ 214              		.loc 1 239 5 is_stmt 1 view .LVU56
+ 215              		.loc 1 239 14 is_stmt 0 view .LVU57
+ 216 0004 8368     		ldr	r3, [r0, #8]
+ 217 0006 0122     		movs	r2, #1
+ 218 0008 1343     		orrs	r3, r2
+ 219 000a 8360     		str	r3, [r0, #8]
+ARM GAS  /tmp/cc8DdBWC.s 			page 9
+
+
+ 220              	.L10:
+ 240:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 241:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 242:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 243:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Set the ADDIS to Disable the ADC peripheral */
+ 244:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CR |= (uint32_t)ADC_CR_ADDIS;
+ 245:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 246:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 221              		.loc 1 246 1 view .LVU58
+ 222              		@ sp needed
+ 223 000c 7047     		bx	lr
+ 224              	.L11:
+ 244:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 225              		.loc 1 244 5 is_stmt 1 view .LVU59
+ 244:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 226              		.loc 1 244 14 is_stmt 0 view .LVU60
+ 227 000e 8368     		ldr	r3, [r0, #8]
+ 228 0010 0222     		movs	r2, #2
+ 229 0012 1343     		orrs	r3, r2
+ 230 0014 8360     		str	r3, [r0, #8]
+ 231              		.loc 1 246 1 view .LVU61
+ 232 0016 F9E7     		b	.L10
+ 233              		.cfi_endproc
+ 234              	.LFE35:
+ 236              		.section	.text.ADC_JitterCmd,"ax",%progbits
+ 237              		.align	1
+ 238              		.global	ADC_JitterCmd
+ 239              		.syntax unified
+ 240              		.code	16
+ 241              		.thumb_func
+ 242              		.fpu softvfp
+ 244              	ADC_JitterCmd:
+ 245              	.LVL14:
+ 246              	.LFB36:
+ 247:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 248:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 249:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the jitter when the ADC is clocked by PCLK div2
+ 250:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         or div4
+ 251:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 252:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_JitterOff: This parameter can be :
+ 253:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_JitterOff_PCLKDiv2: Remove jitter when ADC is clocked by PLCK divided by 2
+ 254:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_JitterOff_PCLKDiv4: Remove jitter when ADC is clocked by PLCK divided by 4
+ 255:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the ADCx jitter. 
+ 256:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 257:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 258:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 259:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_JitterCmd(ADC_TypeDef* ADCx, uint32_t ADC_JitterOff, FunctionalState NewState)
+ 260:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 247              		.loc 1 260 1 is_stmt 1 view -0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251              		@ link register save eliminated.
+ 261:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 262:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 252              		.loc 1 262 3 view .LVU63
+ 263:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_JITTEROFF(ADC_JitterOff));
+ARM GAS  /tmp/cc8DdBWC.s 			page 10
+
+
+ 253              		.loc 1 263 3 view .LVU64
+ 264:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 254              		.loc 1 264 3 view .LVU65
+ 265:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 266:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 255              		.loc 1 266 3 view .LVU66
+ 256              		.loc 1 266 6 is_stmt 0 view .LVU67
+ 257 0000 002A     		cmp	r2, #0
+ 258 0002 03D0     		beq	.L14
+ 267:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 268:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable Jitter */
+ 269:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR2 |= (uint32_t)ADC_JitterOff;
+ 259              		.loc 1 269 5 is_stmt 1 view .LVU68
+ 260              		.loc 1 269 17 is_stmt 0 view .LVU69
+ 261 0004 0369     		ldr	r3, [r0, #16]
+ 262 0006 1943     		orrs	r1, r3
+ 263              	.LVL15:
+ 264              		.loc 1 269 17 view .LVU70
+ 265 0008 0161     		str	r1, [r0, #16]
+ 266              	.L13:
+ 270:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 271:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 272:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 273:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable Jitter */
+ 274:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR2 &= (uint32_t)(~ADC_JitterOff);
+ 275:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 276:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 267              		.loc 1 276 1 view .LVU71
+ 268              		@ sp needed
+ 269 000a 7047     		bx	lr
+ 270              	.LVL16:
+ 271              	.L14:
+ 274:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 272              		.loc 1 274 5 is_stmt 1 view .LVU72
+ 274:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 273              		.loc 1 274 17 is_stmt 0 view .LVU73
+ 274 000c 0369     		ldr	r3, [r0, #16]
+ 275 000e 8B43     		bics	r3, r1
+ 276 0010 0361     		str	r3, [r0, #16]
+ 277              		.loc 1 276 1 view .LVU74
+ 278 0012 FAE7     		b	.L13
+ 279              		.cfi_endproc
+ 280              	.LFE36:
+ 282              		.section	.text.ADC_AutoPowerOffCmd,"ax",%progbits
+ 283              		.align	1
+ 284              		.global	ADC_AutoPowerOffCmd
+ 285              		.syntax unified
+ 286              		.code	16
+ 287              		.thumb_func
+ 288              		.fpu softvfp
+ 290              	ADC_AutoPowerOffCmd:
+ 291              	.LVL17:
+ 292              	.LFB37:
+ 277:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 278:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 279:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @}
+ 280:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ARM GAS  /tmp/cc8DdBWC.s 			page 11
+
+
+ 281:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 282:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group2 Power saving functions
+ 283:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief   Power saving functions 
+ 284:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 285:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim
+ 286:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 287:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****           ##### Power saving functions #####
+ 288:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 289:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides functions allowing to reduce power consumption.
+ 290:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] The two function must be combined to get the maximal benefits:
+ 291:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          When the ADC frequency is higher than the CPU one, it is recommended to 
+ 292:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Enable the Auto Delayed Conversion mode : 
+ 293:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ==> using ADC_WaitModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState);
+ 294:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Enable the power off in Delay phases :
+ 295:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ==> using ADC_AutoPowerOffCmd(ADC_TypeDef* ADCx, FunctionalState NewState);
+ 296:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 297:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+ 298:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 299:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 300:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 301:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 302:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the ADC Power Off.
+ 303:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   ADC power-on and power-off can be managed by hardware to cut the 
+ 304:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         consumption when the ADC is not converting. 
+ 305:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 306:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   The ADC can be powered down: 
+ 307:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         - During the Auto delay phase 
+ 308:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           => The ADC is powered on again at the end of the delay (until the 
+ 309:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *              previous data is read from the ADC data register). 
+ 310:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         - During the ADC is waiting for a trigger event 
+ 311:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           => The ADC is powered up at the next trigger event (when the 
+ 312:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *              conversion is started).
+ 313:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the ADCx power Off. 
+ 314:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 315:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 316:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 317:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_AutoPowerOffCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 318:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 293              		.loc 1 318 1 is_stmt 1 view -0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 0
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 297              		@ link register save eliminated.
+ 319:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 320:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 298              		.loc 1 320 3 view .LVU76
+ 321:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 299              		.loc 1 321 3 view .LVU77
+ 322:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 323:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 300              		.loc 1 323 3 view .LVU78
+ 301              		.loc 1 323 6 is_stmt 0 view .LVU79
+ 302 0000 0029     		cmp	r1, #0
+ 303 0002 05D0     		beq	.L17
+ 324:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 325:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the ADC Automatic Power-Off */
+ 326:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= ADC_CFGR1_AUTOFF;
+ARM GAS  /tmp/cc8DdBWC.s 			page 12
+
+
+ 304              		.loc 1 326 5 is_stmt 1 view .LVU80
+ 305              		.loc 1 326 17 is_stmt 0 view .LVU81
+ 306 0004 C268     		ldr	r2, [r0, #12]
+ 307 0006 8023     		movs	r3, #128
+ 308 0008 1B02     		lsls	r3, r3, #8
+ 309 000a 1343     		orrs	r3, r2
+ 310 000c C360     		str	r3, [r0, #12]
+ 311              	.L16:
+ 327:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 328:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 329:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 330:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the ADC Automatic Power-Off */
+ 331:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)~ADC_CFGR1_AUTOFF;
+ 332:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 333:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 312              		.loc 1 333 1 view .LVU82
+ 313              		@ sp needed
+ 314 000e 7047     		bx	lr
+ 315              	.L17:
+ 331:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 316              		.loc 1 331 5 is_stmt 1 view .LVU83
+ 331:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 317              		.loc 1 331 17 is_stmt 0 view .LVU84
+ 318 0010 C368     		ldr	r3, [r0, #12]
+ 319 0012 024A     		ldr	r2, .L19
+ 320 0014 1340     		ands	r3, r2
+ 321 0016 C360     		str	r3, [r0, #12]
+ 322              		.loc 1 333 1 view .LVU85
+ 323 0018 F9E7     		b	.L16
+ 324              	.L20:
+ 325 001a C046     		.align	2
+ 326              	.L19:
+ 327 001c FF7FFFFF 		.word	-32769
+ 328              		.cfi_endproc
+ 329              	.LFE37:
+ 331              		.section	.text.ADC_WaitModeCmd,"ax",%progbits
+ 332              		.align	1
+ 333              		.global	ADC_WaitModeCmd
+ 334              		.syntax unified
+ 335              		.code	16
+ 336              		.thumb_func
+ 337              		.fpu softvfp
+ 339              	ADC_WaitModeCmd:
+ 340              	.LVL18:
+ 341              	.LFB38:
+ 334:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 335:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 336:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the Wait conversion mode.
+ 337:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   When the CPU clock is not fast enough to manage the data rate, a 
+ 338:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         Hardware delay can be introduced between ADC conversions to reduce 
+ 339:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         this data rate. 
+ 340:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   The Hardware delay is inserted after :
+ 341:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         - after each conversions and until the previous data is read from the 
+ 342:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *           ADC data register
+ 343:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   This is a way to automatically adapt the speed of the ADC to the speed 
+ 344:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         of the system which will read the data.
+ 345:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   Any hardware triggers wich occur while a conversion is on going or 
+ARM GAS  /tmp/cc8DdBWC.s 			page 13
+
+
+ 346:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         while the automatic Delay is applied are ignored 
+ 347:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 348:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the ADCx Auto-Delay.
+ 349:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 350:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 351:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 352:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_WaitModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 353:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 342              		.loc 1 353 1 is_stmt 1 view -0
+ 343              		.cfi_startproc
+ 344              		@ args = 0, pretend = 0, frame = 0
+ 345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 346              		@ link register save eliminated.
+ 354:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 355:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 347              		.loc 1 355 3 view .LVU87
+ 356:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 348              		.loc 1 356 3 view .LVU88
+ 357:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 358:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 349              		.loc 1 358 3 view .LVU89
+ 350              		.loc 1 358 6 is_stmt 0 view .LVU90
+ 351 0000 0029     		cmp	r1, #0
+ 352 0002 05D0     		beq	.L22
+ 359:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 360:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the ADC Automatic Delayed conversion */
+ 361:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= ADC_CFGR1_WAIT;
+ 353              		.loc 1 361 5 is_stmt 1 view .LVU91
+ 354              		.loc 1 361 17 is_stmt 0 view .LVU92
+ 355 0004 C268     		ldr	r2, [r0, #12]
+ 356 0006 8023     		movs	r3, #128
+ 357 0008 DB01     		lsls	r3, r3, #7
+ 358 000a 1343     		orrs	r3, r2
+ 359 000c C360     		str	r3, [r0, #12]
+ 360              	.L21:
+ 362:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 363:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 364:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 365:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the ADC Automatic Delayed conversion */
+ 366:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)~ADC_CFGR1_WAIT;
+ 367:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 368:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 361              		.loc 1 368 1 view .LVU93
+ 362              		@ sp needed
+ 363 000e 7047     		bx	lr
+ 364              	.L22:
+ 366:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 365              		.loc 1 366 5 is_stmt 1 view .LVU94
+ 366:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 366              		.loc 1 366 17 is_stmt 0 view .LVU95
+ 367 0010 C368     		ldr	r3, [r0, #12]
+ 368 0012 024A     		ldr	r2, .L24
+ 369 0014 1340     		ands	r3, r2
+ 370 0016 C360     		str	r3, [r0, #12]
+ 371              		.loc 1 368 1 view .LVU96
+ 372 0018 F9E7     		b	.L21
+ 373              	.L25:
+ARM GAS  /tmp/cc8DdBWC.s 			page 14
+
+
+ 374 001a C046     		.align	2
+ 375              	.L24:
+ 376 001c FFBFFFFF 		.word	-16385
+ 377              		.cfi_endproc
+ 378              	.LFE38:
+ 380              		.section	.text.ADC_AnalogWatchdogCmd,"ax",%progbits
+ 381              		.align	1
+ 382              		.global	ADC_AnalogWatchdogCmd
+ 383              		.syntax unified
+ 384              		.code	16
+ 385              		.thumb_func
+ 386              		.fpu softvfp
+ 388              	ADC_AnalogWatchdogCmd:
+ 389              	.LVL19:
+ 390              	.LFB39:
+ 369:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 370:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 371:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @}
+ 372:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 373:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 374:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group3 Analog Watchdog configuration functions
+ 375:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief   Analog Watchdog configuration functions 
+ 376:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 377:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim
+ 378:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 379:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                    ##### Analog Watchdog configuration functions #####
+ 380:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================  
+ 381:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides functions allowing to configure the Analog Watchdog
+ 382:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (AWD) feature in the ADC.
+ 383:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] A typical configuration Analog Watchdog is done following these steps :
+ 384:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) the ADC guarded channel(s) is (are) selected using the 
+ 385:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_AnalogWatchdogSingleChannelConfig() function.
+ 386:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) The Analog watchdog lower and higher threshold are configured using the  
+ 387:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_AnalogWatchdogThresholdsConfig() function.
+ 388:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) The Analog watchdog is enabled and configured to enable the check, on one
+ 389:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              or more channels, using the  ADC_AnalogWatchdogCmd() function.
+ 390:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Enable the analog watchdog on the selected channel using
+ 391:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC_AnalogWatchdogSingleChannelCmd() function
+ 392:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 393:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+ 394:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 395:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 396:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 397:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 398:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the analog watchdog 
+ 399:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 400:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the ADCx Analog Watchdog.
+ 401:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 402:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 403:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 404:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_AnalogWatchdogCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 405:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 391              		.loc 1 405 1 is_stmt 1 view -0
+ 392              		.cfi_startproc
+ 393              		@ args = 0, pretend = 0, frame = 0
+ 394              		@ frame_needed = 0, uses_anonymous_args = 0
+ 395              		@ link register save eliminated.
+ARM GAS  /tmp/cc8DdBWC.s 			page 15
+
+
+ 406:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 407:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 396              		.loc 1 407 3 view .LVU98
+ 408:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 397              		.loc 1 408 3 view .LVU99
+ 409:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 410:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 398              		.loc 1 410 3 view .LVU100
+ 399              		.loc 1 410 6 is_stmt 0 view .LVU101
+ 400 0000 0029     		cmp	r1, #0
+ 401 0002 05D0     		beq	.L27
+ 411:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 412:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the ADC Analog Watchdog */
+ 413:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= ADC_CFGR1_AWDEN;
+ 402              		.loc 1 413 5 is_stmt 1 view .LVU102
+ 403              		.loc 1 413 17 is_stmt 0 view .LVU103
+ 404 0004 C268     		ldr	r2, [r0, #12]
+ 405 0006 8023     		movs	r3, #128
+ 406 0008 1B04     		lsls	r3, r3, #16
+ 407 000a 1343     		orrs	r3, r2
+ 408 000c C360     		str	r3, [r0, #12]
+ 409              	.L26:
+ 414:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 415:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 416:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 417:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the ADC Analog Watchdog */
+ 418:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)~ADC_CFGR1_AWDEN;
+ 419:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 420:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 410              		.loc 1 420 1 view .LVU104
+ 411              		@ sp needed
+ 412 000e 7047     		bx	lr
+ 413              	.L27:
+ 418:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 414              		.loc 1 418 5 is_stmt 1 view .LVU105
+ 418:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 415              		.loc 1 418 17 is_stmt 0 view .LVU106
+ 416 0010 C368     		ldr	r3, [r0, #12]
+ 417 0012 024A     		ldr	r2, .L29
+ 418 0014 1340     		ands	r3, r2
+ 419 0016 C360     		str	r3, [r0, #12]
+ 420              		.loc 1 420 1 view .LVU107
+ 421 0018 F9E7     		b	.L26
+ 422              	.L30:
+ 423 001a C046     		.align	2
+ 424              	.L29:
+ 425 001c FFFF7FFF 		.word	-8388609
+ 426              		.cfi_endproc
+ 427              	.LFE39:
+ 429              		.section	.text.ADC_AnalogWatchdogThresholdsConfig,"ax",%progbits
+ 430              		.align	1
+ 431              		.global	ADC_AnalogWatchdogThresholdsConfig
+ 432              		.syntax unified
+ 433              		.code	16
+ 434              		.thumb_func
+ 435              		.fpu softvfp
+ 437              	ADC_AnalogWatchdogThresholdsConfig:
+ARM GAS  /tmp/cc8DdBWC.s 			page 16
+
+
+ 438              	.LVL20:
+ 439              	.LFB40:
+ 421:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 422:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 423:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Configures the high and low thresholds of the analog watchdog. 
+ 424:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 425:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  HighThreshold: the ADC analog watchdog High threshold value.
+ 426:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter must be a 12bit value.
+ 427:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  LowThreshold: the ADC analog watchdog Low threshold value.
+ 428:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter must be a 12bit value.
+ 429:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 430:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 431:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_AnalogWatchdogThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold,
+ 432:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                                         uint16_t LowThreshold)
+ 433:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 440              		.loc 1 433 1 is_stmt 1 view -0
+ 441              		.cfi_startproc
+ 442              		@ args = 0, pretend = 0, frame = 0
+ 443              		@ frame_needed = 0, uses_anonymous_args = 0
+ 444              		@ link register save eliminated.
+ 434:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 435:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 445              		.loc 1 435 3 view .LVU109
+ 436:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_THRESHOLD(HighThreshold));
+ 446              		.loc 1 436 3 view .LVU110
+ 437:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_THRESHOLD(LowThreshold));
+ 447              		.loc 1 437 3 view .LVU111
+ 438:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 439:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set the ADCx high and low threshold */
+ 440:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->TR = LowThreshold | ((uint32_t)HighThreshold << 16);
+ 448              		.loc 1 440 3 view .LVU112
+ 449              		.loc 1 440 54 is_stmt 0 view .LVU113
+ 450 0000 0904     		lsls	r1, r1, #16
+ 451              	.LVL21:
+ 452              		.loc 1 440 27 view .LVU114
+ 453 0002 0A43     		orrs	r2, r1
+ 454              	.LVL22:
+ 455              		.loc 1 440 12 view .LVU115
+ 456 0004 0262     		str	r2, [r0, #32]
+ 441:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 442:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 457              		.loc 1 442 1 view .LVU116
+ 458              		@ sp needed
+ 459 0006 7047     		bx	lr
+ 460              		.cfi_endproc
+ 461              	.LFE40:
+ 463              		.section	.text.ADC_AnalogWatchdogSingleChannelConfig,"ax",%progbits
+ 464              		.align	1
+ 465              		.global	ADC_AnalogWatchdogSingleChannelConfig
+ 466              		.syntax unified
+ 467              		.code	16
+ 468              		.thumb_func
+ 469              		.fpu softvfp
+ 471              	ADC_AnalogWatchdogSingleChannelConfig:
+ 472              	.LVL23:
+ 473              	.LFB41:
+ 443:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 17
+
+
+ 444:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 445:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Configures the analog watchdog guarded single channel
+ 446:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 447:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_AnalogWatchdog_Channel: the ADC channel to configure for the analog watchdog.
+ 448:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+ 449:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_0: ADC Channel0 selected
+ 450:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_1: ADC Channel1 selected
+ 451:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_2: ADC Channel2 selected
+ 452:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_3: ADC Channel3 selected
+ 453:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_4: ADC Channel4 selected
+ 454:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_5: ADC Channel5 selected
+ 455:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_6: ADC Channel6 selected
+ 456:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_7: ADC Channel7 selected
+ 457:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_8: ADC Channel8 selected
+ 458:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_9: ADC Channel9 selected
+ 459:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_10: ADC Channel10 selected
+ 460:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_11: ADC Channel11 selected
+ 461:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_12: ADC Channel12 selected
+ 462:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_13: ADC Channel13 selected
+ 463:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_14: ADC Channel14 selected
+ 464:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_15: ADC Channel15 selected
+ 465:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_16: ADC Channel16 selected
+ 466:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_17: ADC Channel17 selected
+ 467:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_AnalogWatchdog_Channel_18: ADC Channel18 selected
+ 468:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   The channel selected on the AWDCH must be also set into the CHSELR 
+ 469:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         register 
+ 470:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 471:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 472:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_AnalogWatchdogSingleChannelConfig(ADC_TypeDef* ADCx, uint32_t ADC_AnalogWatchdog_Channel)
+ 473:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 474              		.loc 1 473 1 is_stmt 1 view -0
+ 475              		.cfi_startproc
+ 476              		@ args = 0, pretend = 0, frame = 0
+ 477              		@ frame_needed = 0, uses_anonymous_args = 0
+ 478              		@ link register save eliminated.
+ 474:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   uint32_t tmpreg = 0;
+ 479              		.loc 1 474 3 view .LVU118
+ 475:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 476:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 477:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 480              		.loc 1 477 3 view .LVU119
+ 478:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ANALOG_WATCHDOG_CHANNEL(ADC_AnalogWatchdog_Channel));
+ 481              		.loc 1 478 3 view .LVU120
+ 479:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 480:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Get the old register value */
+ 481:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg = ADCx->CFGR1;
+ 482              		.loc 1 481 3 view .LVU121
+ 483              		.loc 1 481 10 is_stmt 0 view .LVU122
+ 484 0000 C368     		ldr	r3, [r0, #12]
+ 485              	.LVL24:
+ 482:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 483:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Clear the Analog watchdog channel select bits */
+ 484:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg &= ~ADC_CFGR1_AWDCH;
+ 486              		.loc 1 484 3 is_stmt 1 view .LVU123
+ 487              		.loc 1 484 10 is_stmt 0 view .LVU124
+ 488 0002 024A     		ldr	r2, .L33
+ 489 0004 1340     		ands	r3, r2
+ARM GAS  /tmp/cc8DdBWC.s 			page 18
+
+
+ 490              	.LVL25:
+ 485:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 486:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set the Analog watchdog channel */
+ 487:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg |= ADC_AnalogWatchdog_Channel;
+ 491              		.loc 1 487 3 is_stmt 1 view .LVU125
+ 492              		.loc 1 487 10 is_stmt 0 view .LVU126
+ 493 0006 0B43     		orrs	r3, r1
+ 494              	.LVL26:
+ 488:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 489:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Store the new register value */
+ 490:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CFGR1 = tmpreg;
+ 495              		.loc 1 490 3 is_stmt 1 view .LVU127
+ 496              		.loc 1 490 15 is_stmt 0 view .LVU128
+ 497 0008 C360     		str	r3, [r0, #12]
+ 491:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 498              		.loc 1 491 1 view .LVU129
+ 499              		@ sp needed
+ 500 000a 7047     		bx	lr
+ 501              	.L34:
+ 502              		.align	2
+ 503              	.L33:
+ 504 000c FFFFFF83 		.word	-2080374785
+ 505              		.cfi_endproc
+ 506              	.LFE41:
+ 508              		.section	.text.ADC_AnalogWatchdogSingleChannelCmd,"ax",%progbits
+ 509              		.align	1
+ 510              		.global	ADC_AnalogWatchdogSingleChannelCmd
+ 511              		.syntax unified
+ 512              		.code	16
+ 513              		.thumb_func
+ 514              		.fpu softvfp
+ 516              	ADC_AnalogWatchdogSingleChannelCmd:
+ 517              	.LVL27:
+ 518              	.LFB42:
+ 492:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 493:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 494:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the ADC Analog Watchdog Single Channel.
+ 495:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 496:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the ADCx ADC Analog Watchdog Single Channel.
+ 497:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 498:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 499:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 500:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_AnalogWatchdogSingleChannelCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 501:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 519              		.loc 1 501 1 is_stmt 1 view -0
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 0, uses_anonymous_args = 0
+ 523              		@ link register save eliminated.
+ 502:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 503:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 524              		.loc 1 503 3 view .LVU131
+ 504:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 525              		.loc 1 504 3 view .LVU132
+ 505:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 506:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 526              		.loc 1 506 3 view .LVU133
+ARM GAS  /tmp/cc8DdBWC.s 			page 19
+
+
+ 527              		.loc 1 506 6 is_stmt 0 view .LVU134
+ 528 0000 0029     		cmp	r1, #0
+ 529 0002 05D0     		beq	.L36
+ 507:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 508:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the ADC Analog Watchdog Single Channel */
+ 509:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= ADC_CFGR1_AWDSGL;
+ 530              		.loc 1 509 5 is_stmt 1 view .LVU135
+ 531              		.loc 1 509 17 is_stmt 0 view .LVU136
+ 532 0004 C268     		ldr	r2, [r0, #12]
+ 533 0006 8023     		movs	r3, #128
+ 534 0008 DB03     		lsls	r3, r3, #15
+ 535 000a 1343     		orrs	r3, r2
+ 536 000c C360     		str	r3, [r0, #12]
+ 537              	.L35:
+ 510:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 511:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 512:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 513:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the ADC Analog Watchdog Single Channel */
+ 514:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)~ADC_CFGR1_AWDSGL;
+ 515:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 516:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 538              		.loc 1 516 1 view .LVU137
+ 539              		@ sp needed
+ 540 000e 7047     		bx	lr
+ 541              	.L36:
+ 514:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 542              		.loc 1 514 5 is_stmt 1 view .LVU138
+ 514:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 543              		.loc 1 514 17 is_stmt 0 view .LVU139
+ 544 0010 C368     		ldr	r3, [r0, #12]
+ 545 0012 024A     		ldr	r2, .L38
+ 546 0014 1340     		ands	r3, r2
+ 547 0016 C360     		str	r3, [r0, #12]
+ 548              		.loc 1 516 1 view .LVU140
+ 549 0018 F9E7     		b	.L35
+ 550              	.L39:
+ 551 001a C046     		.align	2
+ 552              	.L38:
+ 553 001c FFFFBFFF 		.word	-4194305
+ 554              		.cfi_endproc
+ 555              	.LFE42:
+ 557              		.section	.text.ADC_TempSensorCmd,"ax",%progbits
+ 558              		.align	1
+ 559              		.global	ADC_TempSensorCmd
+ 560              		.syntax unified
+ 561              		.code	16
+ 562              		.thumb_func
+ 563              		.fpu softvfp
+ 565              	ADC_TempSensorCmd:
+ 566              	.LVL28:
+ 567              	.LFB43:
+ 517:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 518:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 519:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @}
+ 520:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 521:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 522:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group4 Temperature Sensor, Vrefint  and Vbat management functions
+ARM GAS  /tmp/cc8DdBWC.s 			page 20
+
+
+ 523:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief   Temperature Sensor, Vrefint  and Vbat management functions
+ 524:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 525:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim
+ 526:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 527:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ##### Temperature Sensor, Vrefint  and Vbat management function #####
+ 528:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 529:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides a function allowing to enable/disable the internal 
+ 530:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          connections between the ADC and the Temperature Sensor, the Vrefint and
+ 531:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          Vbat source.
+ 532:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****      
+ 533:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] A typical configuration to get the Temperature sensor, Vrefint and Vbat channels 
+ 534:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          voltages is done following these steps :
+ 535:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Enable the internal connection of Temperature sensor, Vrefint or Vbat sources 
+ 536:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              with the ADC channels using ADC_TempSensorCmd(), ADC_VrefintCmd() or ADC_VbatCmd()
+ 537:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              functions. 
+ 538:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) select the ADC_Channel_16(Temperature sensor), ADC_Channel_17(Vrefint)
+ 539:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              or ADC_Channel_18(Voltage battery) using ADC_ChannelConfig() function 
+ 540:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Get the voltage values, using ADC_GetConversionValue() function
+ 541:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 542:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+ 543:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 544:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 545:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 546:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 547:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the temperature sensor channel.
+ 548:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the temperature sensor input channel.
+ 549:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 550:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 551:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 552:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_TempSensorCmd(FunctionalState NewState)
+ 553:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 568              		.loc 1 553 1 is_stmt 1 view -0
+ 569              		.cfi_startproc
+ 570              		@ args = 0, pretend = 0, frame = 0
+ 571              		@ frame_needed = 0, uses_anonymous_args = 0
+ 572              		@ link register save eliminated.
+ 554:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 555:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 573              		.loc 1 555 3 view .LVU142
+ 556:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 557:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 574              		.loc 1 557 3 view .LVU143
+ 575              		.loc 1 557 6 is_stmt 0 view .LVU144
+ 576 0000 0028     		cmp	r0, #0
+ 577 0002 06D0     		beq	.L41
+ 558:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 559:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the temperature sensor channel*/
+ 560:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADC->CCR |= (uint32_t)ADC_CCR_TSEN;
+ 578              		.loc 1 560 5 is_stmt 1 view .LVU145
+ 579              		.loc 1 560 14 is_stmt 0 view .LVU146
+ 580 0004 064A     		ldr	r2, .L43
+ 581 0006 1168     		ldr	r1, [r2]
+ 582 0008 8023     		movs	r3, #128
+ 583 000a 1B04     		lsls	r3, r3, #16
+ 584 000c 0B43     		orrs	r3, r1
+ 585 000e 1360     		str	r3, [r2]
+ 586              	.L40:
+ARM GAS  /tmp/cc8DdBWC.s 			page 21
+
+
+ 561:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 562:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 563:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 564:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the temperature sensor channel*/
+ 565:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADC->CCR &= (uint32_t)(~ADC_CCR_TSEN);
+ 566:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 567:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 587              		.loc 1 567 1 view .LVU147
+ 588              		@ sp needed
+ 589 0010 7047     		bx	lr
+ 590              	.L41:
+ 565:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 591              		.loc 1 565 5 is_stmt 1 view .LVU148
+ 565:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 592              		.loc 1 565 14 is_stmt 0 view .LVU149
+ 593 0012 034A     		ldr	r2, .L43
+ 594 0014 1368     		ldr	r3, [r2]
+ 595 0016 0349     		ldr	r1, .L43+4
+ 596 0018 0B40     		ands	r3, r1
+ 597 001a 1360     		str	r3, [r2]
+ 598              		.loc 1 567 1 view .LVU150
+ 599 001c F8E7     		b	.L40
+ 600              	.L44:
+ 601 001e C046     		.align	2
+ 602              	.L43:
+ 603 0020 08270140 		.word	1073817352
+ 604 0024 FFFF7FFF 		.word	-8388609
+ 605              		.cfi_endproc
+ 606              	.LFE43:
+ 608              		.section	.text.ADC_VrefintCmd,"ax",%progbits
+ 609              		.align	1
+ 610              		.global	ADC_VrefintCmd
+ 611              		.syntax unified
+ 612              		.code	16
+ 613              		.thumb_func
+ 614              		.fpu softvfp
+ 616              	ADC_VrefintCmd:
+ 617              	.LVL29:
+ 618              	.LFB44:
+ 568:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 569:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 570:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the Vrefint channel.
+ 571:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the Vref input channel.
+ 572:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 573:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 574:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 575:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_VrefintCmd(FunctionalState NewState)
+ 576:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 619              		.loc 1 576 1 is_stmt 1 view -0
+ 620              		.cfi_startproc
+ 621              		@ args = 0, pretend = 0, frame = 0
+ 622              		@ frame_needed = 0, uses_anonymous_args = 0
+ 623              		@ link register save eliminated.
+ 577:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 578:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 624              		.loc 1 578 3 view .LVU152
+ 579:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 22
+
+
+ 580:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 625              		.loc 1 580 3 view .LVU153
+ 626              		.loc 1 580 6 is_stmt 0 view .LVU154
+ 627 0000 0028     		cmp	r0, #0
+ 628 0002 06D0     		beq	.L46
+ 581:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 582:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the Vrefint channel*/
+ 583:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADC->CCR |= (uint32_t)ADC_CCR_VREFEN;
+ 629              		.loc 1 583 5 is_stmt 1 view .LVU155
+ 630              		.loc 1 583 14 is_stmt 0 view .LVU156
+ 631 0004 064A     		ldr	r2, .L48
+ 632 0006 1168     		ldr	r1, [r2]
+ 633 0008 8023     		movs	r3, #128
+ 634 000a DB03     		lsls	r3, r3, #15
+ 635 000c 0B43     		orrs	r3, r1
+ 636 000e 1360     		str	r3, [r2]
+ 637              	.L45:
+ 584:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 585:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 586:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 587:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the Vrefint channel*/
+ 588:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADC->CCR &= (uint32_t)(~ADC_CCR_VREFEN);
+ 589:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 590:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 638              		.loc 1 590 1 view .LVU157
+ 639              		@ sp needed
+ 640 0010 7047     		bx	lr
+ 641              	.L46:
+ 588:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 642              		.loc 1 588 5 is_stmt 1 view .LVU158
+ 588:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 643              		.loc 1 588 14 is_stmt 0 view .LVU159
+ 644 0012 034A     		ldr	r2, .L48
+ 645 0014 1368     		ldr	r3, [r2]
+ 646 0016 0349     		ldr	r1, .L48+4
+ 647 0018 0B40     		ands	r3, r1
+ 648 001a 1360     		str	r3, [r2]
+ 649              		.loc 1 590 1 view .LVU160
+ 650 001c F8E7     		b	.L45
+ 651              	.L49:
+ 652 001e C046     		.align	2
+ 653              	.L48:
+ 654 0020 08270140 		.word	1073817352
+ 655 0024 FFFFBFFF 		.word	-4194305
+ 656              		.cfi_endproc
+ 657              	.LFE44:
+ 659              		.section	.text.ADC_VbatCmd,"ax",%progbits
+ 660              		.align	1
+ 661              		.global	ADC_VbatCmd
+ 662              		.syntax unified
+ 663              		.code	16
+ 664              		.thumb_func
+ 665              		.fpu softvfp
+ 667              	ADC_VbatCmd:
+ 668              	.LVL30:
+ 669              	.LFB45:
+ 591:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 23
+
+
+ 592:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 593:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the Vbat channel.
+ 594:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the Vbat input channel.
+ 595:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 596:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 597:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 598:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_VbatCmd(FunctionalState NewState)
+ 599:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 670              		.loc 1 599 1 is_stmt 1 view -0
+ 671              		.cfi_startproc
+ 672              		@ args = 0, pretend = 0, frame = 0
+ 673              		@ frame_needed = 0, uses_anonymous_args = 0
+ 674              		@ link register save eliminated.
+ 600:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 601:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 675              		.loc 1 601 3 view .LVU162
+ 602:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 603:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 676              		.loc 1 603 3 view .LVU163
+ 677              		.loc 1 603 6 is_stmt 0 view .LVU164
+ 678 0000 0028     		cmp	r0, #0
+ 679 0002 06D0     		beq	.L51
+ 604:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 605:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the Vbat channel*/
+ 606:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADC->CCR |= (uint32_t)ADC_CCR_VBATEN;
+ 680              		.loc 1 606 5 is_stmt 1 view .LVU165
+ 681              		.loc 1 606 14 is_stmt 0 view .LVU166
+ 682 0004 064A     		ldr	r2, .L53
+ 683 0006 1168     		ldr	r1, [r2]
+ 684 0008 8023     		movs	r3, #128
+ 685 000a 5B04     		lsls	r3, r3, #17
+ 686 000c 0B43     		orrs	r3, r1
+ 687 000e 1360     		str	r3, [r2]
+ 688              	.L50:
+ 607:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 608:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 609:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 610:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the Vbat channel*/
+ 611:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADC->CCR &= (uint32_t)(~ADC_CCR_VBATEN);
+ 612:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 613:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 689              		.loc 1 613 1 view .LVU167
+ 690              		@ sp needed
+ 691 0010 7047     		bx	lr
+ 692              	.L51:
+ 611:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 693              		.loc 1 611 5 is_stmt 1 view .LVU168
+ 611:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 694              		.loc 1 611 14 is_stmt 0 view .LVU169
+ 695 0012 034A     		ldr	r2, .L53
+ 696 0014 1368     		ldr	r3, [r2]
+ 697 0016 0349     		ldr	r1, .L53+4
+ 698 0018 0B40     		ands	r3, r1
+ 699 001a 1360     		str	r3, [r2]
+ 700              		.loc 1 613 1 view .LVU170
+ 701 001c F8E7     		b	.L50
+ 702              	.L54:
+ARM GAS  /tmp/cc8DdBWC.s 			page 24
+
+
+ 703 001e C046     		.align	2
+ 704              	.L53:
+ 705 0020 08270140 		.word	1073817352
+ 706 0024 FFFFFFFE 		.word	-16777217
+ 707              		.cfi_endproc
+ 708              	.LFE45:
+ 710              		.section	.text.ADC_ChannelConfig,"ax",%progbits
+ 711              		.align	1
+ 712              		.global	ADC_ChannelConfig
+ 713              		.syntax unified
+ 714              		.code	16
+ 715              		.thumb_func
+ 716              		.fpu softvfp
+ 718              	ADC_ChannelConfig:
+ 719              	.LVL31:
+ 720              	.LFB46:
+ 614:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 615:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 616:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @}
+ 617:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 618:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 619:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group5 Channels Configuration functions
+ 620:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief    Channels Configuration functions 
+ 621:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 622:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim
+ 623:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 624:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****             ##### Channels Configuration functions #####
+ 625:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 626:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides functions allowing to manage the ADC channels,
+ 627:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          it is composed of 3 sub sections :
+ 628:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Configuration and management functions for ADC channels: This subsection 
+ 629:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              provides functions allowing to configure the ADC channels :    
+ 630:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Select the ADC channels
+ 631:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Activate ADC Calibration
+ 632:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Activate the Overrun Mode.
+ 633:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Activate the Discontinuous Mode 
+ 634:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Activate the Continuous Mode.
+ 635:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Configure the sampling time for each channel
+ 636:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Select the conversion Trigger and Edge for ADC channels
+ 637:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Select the scan direction.
+ 638:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              -@@- Please Note that the following features for ADC channels are configurated
+ 639:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                   using the ADC_Init() function : 
+ 640:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                   (+@@) Activate the Continuous Mode (can be also activated by ADC_OverrunModeCmd()
+ 641:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                   (+@@) Select the conversion Trigger and Edge for ADC channels
+ 642:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                   (+@@) Select the scan direction.
+ 643:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Control the ADC peripheral : This subsection permits to command the ADC:
+ 644:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Stop or discard an on-going conversion (ADSTP command)
+ 645:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (++) Start the ADC conversion .
+ 646:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (#) Get the conversion data: This subsection provides an important function in 
+ 647:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              the ADC peripheral since it returns the converted data of the current 
+ 648:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              ADC channel. When the Conversion value is read, the EOC Flag is 
+ 649:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              automatically cleared.
+ 650:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 651:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+ 652:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 653:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 654:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 25
+
+
+ 655:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 656:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Configures for the selected ADC and its sampling time.
+ 657:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC peripheral.
+ 658:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_Channel: the ADC channel to configure. 
+ 659:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be any combination of the following values:
+ 660:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_0: ADC Channel0 selected
+ 661:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_1: ADC Channel1 selected
+ 662:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_2: ADC Channel2 selected
+ 663:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_3: ADC Channel3 selected
+ 664:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_4: ADC Channel4 selected
+ 665:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_5: ADC Channel5 selected
+ 666:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_6: ADC Channel6 selected
+ 667:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_7: ADC Channel7 selected
+ 668:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_8: ADC Channel8 selected
+ 669:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_9: ADC Channel9 selected
+ 670:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_10: ADC Channel10 selected
+ 671:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_11: ADC Channel11 selected
+ 672:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_12: ADC Channel12 selected
+ 673:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_13: ADC Channel13 selected
+ 674:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_14: ADC Channel14 selected
+ 675:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_15: ADC Channel15 selected
+ 676:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_16: ADC Channel16 selected
+ 677:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_17: ADC Channel17 selected
+ 678:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_Channel_18: ADC Channel18 selected    
+ 679:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_SampleTime: The sample time value to be set for the selected 
+ 680:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         channel. 
+ 681:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+ 682:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_1_5Cycles: Sample time equal to 1.5 cycles  
+ 683:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_7_5Cycles: Sample time equal to 7.5 cycles
+ 684:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_13_5Cycles: Sample time equal to 13.5 cycles
+ 685:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_28_5Cycles: Sample time equal to 28.5 cycles
+ 686:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_41_5Cycles: Sample time equal to 41.5 cycles
+ 687:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_55_5Cycles: Sample time equal to 55.5 cycles
+ 688:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_71_5Cycles: Sample time equal to 71.5 cycles
+ 689:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_SampleTime_239_5Cycles: Sample time equal to 239.5 cycles
+ 690:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 691:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 692:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_ChannelConfig(ADC_TypeDef* ADCx, uint32_t ADC_Channel, uint32_t ADC_SampleTime)
+ 693:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 721              		.loc 1 693 1 is_stmt 1 view -0
+ 722              		.cfi_startproc
+ 723              		@ args = 0, pretend = 0, frame = 0
+ 724              		@ frame_needed = 0, uses_anonymous_args = 0
+ 725              		@ link register save eliminated.
+ 694:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   uint32_t tmpreg = 0;
+ 726              		.loc 1 694 3 view .LVU172
+ 695:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 696:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 697:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 727              		.loc 1 697 3 view .LVU173
+ 698:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_CHANNEL(ADC_Channel));
+ 728              		.loc 1 698 3 view .LVU174
+ 699:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_SAMPLE_TIME(ADC_SampleTime));
+ 729              		.loc 1 699 3 view .LVU175
+ 700:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 701:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Configure the ADC Channel */
+ 702:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CHSELR |= (uint32_t)ADC_Channel;
+ARM GAS  /tmp/cc8DdBWC.s 			page 26
+
+
+ 730              		.loc 1 702 3 view .LVU176
+ 731              		.loc 1 702 16 is_stmt 0 view .LVU177
+ 732 0000 836A     		ldr	r3, [r0, #40]
+ 733 0002 0B43     		orrs	r3, r1
+ 734 0004 8362     		str	r3, [r0, #40]
+ 703:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 704:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Clear the Sampling time Selection bits */
+ 705:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg &= ~ADC_SMPR1_SMPR;
+ 735              		.loc 1 705 3 is_stmt 1 view .LVU178
+ 706:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 707:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set the ADC Sampling Time register */
+ 708:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   tmpreg |= (uint32_t)ADC_SampleTime;
+ 736              		.loc 1 708 3 view .LVU179
+ 737              	.LVL32:
+ 709:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 710:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Configure the ADC Sample time register */
+ 711:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->SMPR = tmpreg ;
+ 738              		.loc 1 711 3 view .LVU180
+ 739              		.loc 1 711 14 is_stmt 0 view .LVU181
+ 740 0006 4261     		str	r2, [r0, #20]
+ 712:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 741              		.loc 1 712 1 view .LVU182
+ 742              		@ sp needed
+ 743 0008 7047     		bx	lr
+ 744              		.cfi_endproc
+ 745              	.LFE46:
+ 747              		.section	.text.ADC_ContinuousModeCmd,"ax",%progbits
+ 748              		.align	1
+ 749              		.global	ADC_ContinuousModeCmd
+ 750              		.syntax unified
+ 751              		.code	16
+ 752              		.thumb_func
+ 753              		.fpu softvfp
+ 755              	ADC_ContinuousModeCmd:
+ 756              	.LVL33:
+ 757              	.LFB47:
+ 713:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 714:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 715:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enable the Continuous mode for the selected ADCx channels.
+ 716:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 717:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the Continuous mode.
+ 718:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 719:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   It is not possible to have both discontinuous mode and continuous mode
+ 720:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         enabled. In this case (If DISCEN and CONT are Set), the ADC behaves 
+ 721:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         as if continuous mode was disabled
+ 722:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 723:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 724:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_ContinuousModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 725:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 758              		.loc 1 725 1 is_stmt 1 view -0
+ 759              		.cfi_startproc
+ 760              		@ args = 0, pretend = 0, frame = 0
+ 761              		@ frame_needed = 0, uses_anonymous_args = 0
+ 762              		@ link register save eliminated.
+ 726:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 727:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 763              		.loc 1 727 3 view .LVU184
+ARM GAS  /tmp/cc8DdBWC.s 			page 27
+
+
+ 728:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 764              		.loc 1 728 3 view .LVU185
+ 729:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 730:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     if (NewState != DISABLE)
+ 765              		.loc 1 730 5 view .LVU186
+ 766              		.loc 1 730 8 is_stmt 0 view .LVU187
+ 767 0000 0029     		cmp	r1, #0
+ 768 0002 05D0     		beq	.L57
+ 731:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 732:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the Continuous mode*/
+ 733:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= (uint32_t)ADC_CFGR1_CONT;
+ 769              		.loc 1 733 5 is_stmt 1 view .LVU188
+ 770              		.loc 1 733 17 is_stmt 0 view .LVU189
+ 771 0004 C268     		ldr	r2, [r0, #12]
+ 772 0006 8023     		movs	r3, #128
+ 773 0008 9B01     		lsls	r3, r3, #6
+ 774 000a 1343     		orrs	r3, r2
+ 775 000c C360     		str	r3, [r0, #12]
+ 776              	.L56:
+ 734:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 735:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 736:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 737:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the Continuous mode */
+ 738:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)(~ADC_CFGR1_CONT);
+ 739:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 740:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 777              		.loc 1 740 1 view .LVU190
+ 778              		@ sp needed
+ 779 000e 7047     		bx	lr
+ 780              	.L57:
+ 738:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 781              		.loc 1 738 5 is_stmt 1 view .LVU191
+ 738:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 782              		.loc 1 738 17 is_stmt 0 view .LVU192
+ 783 0010 C368     		ldr	r3, [r0, #12]
+ 784 0012 024A     		ldr	r2, .L59
+ 785 0014 1340     		ands	r3, r2
+ 786 0016 C360     		str	r3, [r0, #12]
+ 787              		.loc 1 740 1 view .LVU193
+ 788 0018 F9E7     		b	.L56
+ 789              	.L60:
+ 790 001a C046     		.align	2
+ 791              	.L59:
+ 792 001c FFDFFFFF 		.word	-8193
+ 793              		.cfi_endproc
+ 794              	.LFE47:
+ 796              		.section	.text.ADC_DiscModeCmd,"ax",%progbits
+ 797              		.align	1
+ 798              		.global	ADC_DiscModeCmd
+ 799              		.syntax unified
+ 800              		.code	16
+ 801              		.thumb_func
+ 802              		.fpu softvfp
+ 804              	ADC_DiscModeCmd:
+ 805              	.LVL34:
+ 806              	.LFB48:
+ 741:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 28
+
+
+ 742:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 743:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enable the discontinuous mode for the selected ADC channels.
+ 744:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 745:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the discontinuous mode.
+ 746:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 747:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   It is not possible to have both discontinuous mode and continuous mode
+ 748:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         enabled. In this case (If DISCEN and CONT are Set), the ADC behaves 
+ 749:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         as if continuous mode was disabled
+ 750:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 751:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 752:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 753:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 807              		.loc 1 753 1 is_stmt 1 view -0
+ 808              		.cfi_startproc
+ 809              		@ args = 0, pretend = 0, frame = 0
+ 810              		@ frame_needed = 0, uses_anonymous_args = 0
+ 811              		@ link register save eliminated.
+ 754:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 755:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 812              		.loc 1 755 3 view .LVU195
+ 756:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 813              		.loc 1 756 3 view .LVU196
+ 757:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 758:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     if (NewState != DISABLE)
+ 814              		.loc 1 758 5 view .LVU197
+ 815              		.loc 1 758 8 is_stmt 0 view .LVU198
+ 816 0000 0029     		cmp	r1, #0
+ 817 0002 05D0     		beq	.L62
+ 759:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 760:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the Discontinuous mode */
+ 761:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= (uint32_t)ADC_CFGR1_DISCEN;
+ 818              		.loc 1 761 5 is_stmt 1 view .LVU199
+ 819              		.loc 1 761 17 is_stmt 0 view .LVU200
+ 820 0004 C268     		ldr	r2, [r0, #12]
+ 821 0006 8023     		movs	r3, #128
+ 822 0008 5B02     		lsls	r3, r3, #9
+ 823 000a 1343     		orrs	r3, r2
+ 824 000c C360     		str	r3, [r0, #12]
+ 825              	.L61:
+ 762:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 763:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 764:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 765:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the Discontinuous mode */
+ 766:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)(~ADC_CFGR1_DISCEN);
+ 767:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 768:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 826              		.loc 1 768 1 view .LVU201
+ 827              		@ sp needed
+ 828 000e 7047     		bx	lr
+ 829              	.L62:
+ 766:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 830              		.loc 1 766 5 is_stmt 1 view .LVU202
+ 766:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 831              		.loc 1 766 17 is_stmt 0 view .LVU203
+ 832 0010 C368     		ldr	r3, [r0, #12]
+ 833 0012 024A     		ldr	r2, .L64
+ 834 0014 1340     		ands	r3, r2
+ARM GAS  /tmp/cc8DdBWC.s 			page 29
+
+
+ 835 0016 C360     		str	r3, [r0, #12]
+ 836              		.loc 1 768 1 view .LVU204
+ 837 0018 F9E7     		b	.L61
+ 838              	.L65:
+ 839 001a C046     		.align	2
+ 840              	.L64:
+ 841 001c FFFFFEFF 		.word	-65537
+ 842              		.cfi_endproc
+ 843              	.LFE48:
+ 845              		.section	.text.ADC_OverrunModeCmd,"ax",%progbits
+ 846              		.align	1
+ 847              		.global	ADC_OverrunModeCmd
+ 848              		.syntax unified
+ 849              		.code	16
+ 850              		.thumb_func
+ 851              		.fpu softvfp
+ 853              	ADC_OverrunModeCmd:
+ 854              	.LVL35:
+ 855              	.LFB49:
+ 769:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 770:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 771:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enable the Overrun mode for the selected ADC channels.
+ 772:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 773:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the Overrun mode.
+ 774:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 775:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 776:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 777:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_OverrunModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 778:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 856              		.loc 1 778 1 is_stmt 1 view -0
+ 857              		.cfi_startproc
+ 858              		@ args = 0, pretend = 0, frame = 0
+ 859              		@ frame_needed = 0, uses_anonymous_args = 0
+ 860              		@ link register save eliminated.
+ 779:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 780:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 861              		.loc 1 780 3 view .LVU206
+ 781:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 862              		.loc 1 781 3 view .LVU207
+ 782:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 783:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     if (NewState != DISABLE)
+ 863              		.loc 1 783 5 view .LVU208
+ 864              		.loc 1 783 8 is_stmt 0 view .LVU209
+ 865 0000 0029     		cmp	r1, #0
+ 866 0002 05D0     		beq	.L67
+ 784:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 785:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the Overrun mode */
+ 786:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= (uint32_t)ADC_CFGR1_OVRMOD;
+ 867              		.loc 1 786 5 is_stmt 1 view .LVU210
+ 868              		.loc 1 786 17 is_stmt 0 view .LVU211
+ 869 0004 C268     		ldr	r2, [r0, #12]
+ 870 0006 8023     		movs	r3, #128
+ 871 0008 5B01     		lsls	r3, r3, #5
+ 872 000a 1343     		orrs	r3, r2
+ 873 000c C360     		str	r3, [r0, #12]
+ 874              	.L66:
+ 787:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ARM GAS  /tmp/cc8DdBWC.s 			page 30
+
+
+ 788:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 789:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 790:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the Overrun mode */
+ 791:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)(~ADC_CFGR1_OVRMOD);
+ 792:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 793:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 875              		.loc 1 793 1 view .LVU212
+ 876              		@ sp needed
+ 877 000e 7047     		bx	lr
+ 878              	.L67:
+ 791:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 879              		.loc 1 791 5 is_stmt 1 view .LVU213
+ 791:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 880              		.loc 1 791 17 is_stmt 0 view .LVU214
+ 881 0010 C368     		ldr	r3, [r0, #12]
+ 882 0012 024A     		ldr	r2, .L69
+ 883 0014 1340     		ands	r3, r2
+ 884 0016 C360     		str	r3, [r0, #12]
+ 885              		.loc 1 793 1 view .LVU215
+ 886 0018 F9E7     		b	.L66
+ 887              	.L70:
+ 888 001a C046     		.align	2
+ 889              	.L69:
+ 890 001c FFEFFFFF 		.word	-4097
+ 891              		.cfi_endproc
+ 892              	.LFE49:
+ 894              		.section	.text.ADC_GetCalibrationFactor,"ax",%progbits
+ 895              		.align	1
+ 896              		.global	ADC_GetCalibrationFactor
+ 897              		.syntax unified
+ 898              		.code	16
+ 899              		.thumb_func
+ 900              		.fpu softvfp
+ 902              	ADC_GetCalibrationFactor:
+ 903              	.LVL36:
+ 904              	.LFB50:
+ 794:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 795:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 796:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Active the Calibration operation for the selected ADC.
+ 797:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   The Calibration can be initiated only when ADC is still in the 
+ 798:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         reset configuration (ADEN must be equal to 0).
+ 799:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 800:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval ADC Calibration factor 
+ 801:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 802:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** uint32_t ADC_GetCalibrationFactor(ADC_TypeDef* ADCx)
+ 803:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 905              		.loc 1 803 1 is_stmt 1 view -0
+ 906              		.cfi_startproc
+ 907              		@ args = 0, pretend = 0, frame = 0
+ 908              		@ frame_needed = 0, uses_anonymous_args = 0
+ 909              		@ link register save eliminated.
+ 804:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   uint32_t tmpreg = 0, calibrationcounter = 0, calibrationstatus = 0;
+ 910              		.loc 1 804 3 view .LVU217
+ 805:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 806:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 807:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 911              		.loc 1 807 3 view .LVU218
+ARM GAS  /tmp/cc8DdBWC.s 			page 31
+
+
+ 808:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 809:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Set the ADC calibartion */
+ 810:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CR |= (uint32_t)ADC_CR_ADCAL;
+ 912              		.loc 1 810 3 view .LVU219
+ 913              		.loc 1 810 12 is_stmt 0 view .LVU220
+ 914 0000 8268     		ldr	r2, [r0, #8]
+ 915 0002 8023     		movs	r3, #128
+ 916 0004 1B06     		lsls	r3, r3, #24
+ 917 0006 1343     		orrs	r3, r2
+ 918 0008 8360     		str	r3, [r0, #8]
+ 804:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 919              		.loc 1 804 24 view .LVU221
+ 920 000a 0023     		movs	r3, #0
+ 921              	.LVL37:
+ 922              	.L73:
+ 811:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 812:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Wait until no ADC calibration is completed */
+ 813:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   do
+ 923              		.loc 1 813 3 is_stmt 1 discriminator 2 view .LVU222
+ 814:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 815:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     calibrationstatus = ADCx->CR & ADC_CR_ADCAL;
+ 924              		.loc 1 815 5 discriminator 2 view .LVU223
+ 925              		.loc 1 815 29 is_stmt 0 discriminator 2 view .LVU224
+ 926 000c 8168     		ldr	r1, [r0, #8]
+ 927              	.LVL38:
+ 816:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     calibrationcounter++;  
+ 928              		.loc 1 816 5 is_stmt 1 discriminator 2 view .LVU225
+ 929              		.loc 1 816 23 is_stmt 0 discriminator 2 view .LVU226
+ 930 000e 0133     		adds	r3, r3, #1
+ 931              	.LVL39:
+ 817:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   } while((calibrationcounter != CALIBRATION_TIMEOUT) && (calibrationstatus != 0x00));
+ 932              		.loc 1 817 10 is_stmt 1 discriminator 2 view .LVU227
+ 933              		.loc 1 817 3 is_stmt 0 discriminator 2 view .LVU228
+ 934 0010 F022     		movs	r2, #240
+ 935 0012 1202     		lsls	r2, r2, #8
+ 936 0014 9342     		cmp	r3, r2
+ 937 0016 01D0     		beq	.L72
+ 938              		.loc 1 817 55 discriminator 1 view .LVU229
+ 939 0018 0029     		cmp	r1, #0
+ 940 001a F7DB     		blt	.L73
+ 941              	.L72:
+ 818:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     
+ 819:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if((uint32_t)(ADCx->CR & ADC_CR_ADCAL) == RESET)
+ 942              		.loc 1 819 3 is_stmt 1 view .LVU230
+ 943              		.loc 1 819 21 is_stmt 0 view .LVU231
+ 944 001c 8368     		ldr	r3, [r0, #8]
+ 945              	.LVL40:
+ 946              		.loc 1 819 5 view .LVU232
+ 947 001e 002B     		cmp	r3, #0
+ 948 0020 01DB     		blt	.L75
+ 820:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 821:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /*Get the calibration factor from the ADC data register */
+ 822:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     tmpreg = ADCx->DR;
+ 949              		.loc 1 822 5 is_stmt 1 view .LVU233
+ 950              		.loc 1 822 12 is_stmt 0 view .LVU234
+ 951 0022 006C     		ldr	r0, [r0, #64]
+ 952              	.LVL41:
+ARM GAS  /tmp/cc8DdBWC.s 			page 32
+
+
+ 953              	.L71:
+ 823:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 824:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 825:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 826:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Error factor */
+ 827:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     tmpreg = 0x00000000;
+ 828:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 829:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   return tmpreg;
+ 830:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 954              		.loc 1 830 1 view .LVU235
+ 955              		@ sp needed
+ 956 0024 7047     		bx	lr
+ 957              	.LVL42:
+ 958              	.L75:
+ 827:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 959              		.loc 1 827 12 view .LVU236
+ 960 0026 0020     		movs	r0, #0
+ 961              	.LVL43:
+ 829:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 962              		.loc 1 829 3 is_stmt 1 view .LVU237
+ 829:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 963              		.loc 1 829 10 is_stmt 0 view .LVU238
+ 964 0028 FCE7     		b	.L71
+ 965              		.cfi_endproc
+ 966              	.LFE50:
+ 968              		.section	.text.ADC_StopOfConversion,"ax",%progbits
+ 969              		.align	1
+ 970              		.global	ADC_StopOfConversion
+ 971              		.syntax unified
+ 972              		.code	16
+ 973              		.thumb_func
+ 974              		.fpu softvfp
+ 976              	ADC_StopOfConversion:
+ 977              	.LVL44:
+ 978              	.LFB51:
+ 831:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 832:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 833:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Stop the on going conversions for the selected ADC.
+ 834:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   When ADSTP is set, any on going conversion is aborted, and the ADC 
+ 835:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         data register is not updated with current conversion. 
+ 836:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 837:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 838:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 839:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_StopOfConversion(ADC_TypeDef* ADCx)
+ 840:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 979              		.loc 1 840 1 is_stmt 1 view -0
+ 980              		.cfi_startproc
+ 981              		@ args = 0, pretend = 0, frame = 0
+ 982              		@ frame_needed = 0, uses_anonymous_args = 0
+ 983              		@ link register save eliminated.
+ 841:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 842:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 984              		.loc 1 842 3 view .LVU240
+ 843:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 844:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CR |= (uint32_t)ADC_CR_ADSTP;
+ 985              		.loc 1 844 3 view .LVU241
+ 986              		.loc 1 844 12 is_stmt 0 view .LVU242
+ARM GAS  /tmp/cc8DdBWC.s 			page 33
+
+
+ 987 0000 8368     		ldr	r3, [r0, #8]
+ 988 0002 1022     		movs	r2, #16
+ 989 0004 1343     		orrs	r3, r2
+ 990 0006 8360     		str	r3, [r0, #8]
+ 845:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 991              		.loc 1 845 1 view .LVU243
+ 992              		@ sp needed
+ 993 0008 7047     		bx	lr
+ 994              		.cfi_endproc
+ 995              	.LFE51:
+ 997              		.section	.text.ADC_StartOfConversion,"ax",%progbits
+ 998              		.align	1
+ 999              		.global	ADC_StartOfConversion
+ 1000              		.syntax unified
+ 1001              		.code	16
+ 1002              		.thumb_func
+ 1003              		.fpu softvfp
+ 1005              	ADC_StartOfConversion:
+ 1006              	.LVL45:
+ 1007              	.LFB52:
+ 846:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 847:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 848:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Start Conversion for the selected ADC channels.
+ 849:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @note   In continuous mode, ADSTART is not cleared by hardware with the 
+ 850:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         assertion of EOSEQ because the sequence is automatic relaunched
+ 851:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 852:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 853:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 854:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_StartOfConversion(ADC_TypeDef* ADCx)
+ 855:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1008              		.loc 1 855 1 is_stmt 1 view -0
+ 1009              		.cfi_startproc
+ 1010              		@ args = 0, pretend = 0, frame = 0
+ 1011              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1012              		@ link register save eliminated.
+ 856:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 857:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1013              		.loc 1 857 3 view .LVU245
+ 858:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 859:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CR |= (uint32_t)ADC_CR_ADSTART;
+ 1014              		.loc 1 859 3 view .LVU246
+ 1015              		.loc 1 859 12 is_stmt 0 view .LVU247
+ 1016 0000 8368     		ldr	r3, [r0, #8]
+ 1017 0002 0422     		movs	r2, #4
+ 1018 0004 1343     		orrs	r3, r2
+ 1019 0006 8360     		str	r3, [r0, #8]
+ 860:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1020              		.loc 1 860 1 view .LVU248
+ 1021              		@ sp needed
+ 1022 0008 7047     		bx	lr
+ 1023              		.cfi_endproc
+ 1024              	.LFE52:
+ 1026              		.section	.text.ADC_GetConversionValue,"ax",%progbits
+ 1027              		.align	1
+ 1028              		.global	ADC_GetConversionValue
+ 1029              		.syntax unified
+ 1030              		.code	16
+ARM GAS  /tmp/cc8DdBWC.s 			page 34
+
+
+ 1031              		.thumb_func
+ 1032              		.fpu softvfp
+ 1034              	ADC_GetConversionValue:
+ 1035              	.LVL46:
+ 1036              	.LFB53:
+ 861:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 862:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 863:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Returns the last ADCx conversion result data for ADC channel.  
+ 864:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 865:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval The Data conversion value.
+ 866:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 867:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
+ 868:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1037              		.loc 1 868 1 is_stmt 1 view -0
+ 1038              		.cfi_startproc
+ 1039              		@ args = 0, pretend = 0, frame = 0
+ 1040              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1041              		@ link register save eliminated.
+ 869:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 870:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1042              		.loc 1 870 3 view .LVU250
+ 871:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 872:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Return the selected ADC conversion value */
+ 873:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   return (uint16_t) ADCx->DR;
+ 1043              		.loc 1 873 3 view .LVU251
+ 1044              		.loc 1 873 25 is_stmt 0 view .LVU252
+ 1045 0000 006C     		ldr	r0, [r0, #64]
+ 1046              	.LVL47:
+ 1047              		.loc 1 873 10 view .LVU253
+ 1048 0002 80B2     		uxth	r0, r0
+ 874:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1049              		.loc 1 874 1 view .LVU254
+ 1050              		@ sp needed
+ 1051 0004 7047     		bx	lr
+ 1052              		.cfi_endproc
+ 1053              	.LFE53:
+ 1055              		.section	.text.ADC_DMACmd,"ax",%progbits
+ 1056              		.align	1
+ 1057              		.global	ADC_DMACmd
+ 1058              		.syntax unified
+ 1059              		.code	16
+ 1060              		.thumb_func
+ 1061              		.fpu softvfp
+ 1063              	ADC_DMACmd:
+ 1064              	.LVL48:
+ 1065              	.LFB54:
+ 875:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 876:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 877:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @}
+ 878:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 879:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 880:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group6 DMA Configuration functions
+ 881:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief   Regular Channels DMA Configuration functions 
+ 882:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 883:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim
+ 884:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 885:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****           ##### DMA Configuration functions #####
+ARM GAS  /tmp/cc8DdBWC.s 			page 35
+
+
+ 886:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 887:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides functions allowing to configure the DMA for ADC hannels.
+ 888:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          Since converted channel values are stored into a unique data register, 
+ 889:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          it is useful to use DMA for conversion of more than one channel. This 
+ 890:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          avoids the loss of the data already stored in the ADC Data register. 
+ 891:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          When the DMA mode is enabled (using the ADC_DMACmd() function), after each
+ 892:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          conversion of a channel, a DMA request is generated.
+ 893:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 894:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] Depending on the "DMA disable selection" configuration (using the 
+ 895:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          ADC_DMARequestModeConfig() function), at the end of the last DMA 
+ 896:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          transfer, two possibilities are allowed:
+ 897:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) No new DMA request is issued to the DMA controller (One Shot Mode) 
+ 898:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) Requests can continue to be generated (Circular Mode).
+ 899:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 900:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+ 901:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+ 902:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 903:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 904:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 905:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the specified ADC DMA request.
+ 906:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 907:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the selected ADC DMA transfer.
+ 908:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 909:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+ 910:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 911:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
+ 912:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1066              		.loc 1 912 1 is_stmt 1 view -0
+ 1067              		.cfi_startproc
+ 1068              		@ args = 0, pretend = 0, frame = 0
+ 1069              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1070              		@ link register save eliminated.
+ 913:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 914:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1071              		.loc 1 914 3 view .LVU256
+ 915:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 1072              		.loc 1 915 3 view .LVU257
+ 916:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 917:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 1073              		.loc 1 917 3 view .LVU258
+ 1074              		.loc 1 917 6 is_stmt 0 view .LVU259
+ 1075 0000 0029     		cmp	r1, #0
+ 1076 0002 04D0     		beq	.L80
+ 918:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 919:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the selected ADC DMA request */
+ 920:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 |= (uint32_t)ADC_CFGR1_DMAEN;
+ 1077              		.loc 1 920 5 is_stmt 1 view .LVU260
+ 1078              		.loc 1 920 17 is_stmt 0 view .LVU261
+ 1079 0004 C368     		ldr	r3, [r0, #12]
+ 1080 0006 0122     		movs	r2, #1
+ 1081 0008 1343     		orrs	r3, r2
+ 1082 000a C360     		str	r3, [r0, #12]
+ 1083              	.L79:
+ 921:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 922:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+ 923:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+ 924:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the selected ADC DMA request */
+ARM GAS  /tmp/cc8DdBWC.s 			page 36
+
+
+ 925:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->CFGR1 &= (uint32_t)(~ADC_CFGR1_DMAEN);
+ 926:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 927:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1084              		.loc 1 927 1 view .LVU262
+ 1085              		@ sp needed
+ 1086 000c 7047     		bx	lr
+ 1087              	.L80:
+ 925:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1088              		.loc 1 925 5 is_stmt 1 view .LVU263
+ 925:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1089              		.loc 1 925 17 is_stmt 0 view .LVU264
+ 1090 000e C368     		ldr	r3, [r0, #12]
+ 1091 0010 0122     		movs	r2, #1
+ 1092 0012 9343     		bics	r3, r2
+ 1093 0014 C360     		str	r3, [r0, #12]
+ 1094              		.loc 1 927 1 view .LVU265
+ 1095 0016 F9E7     		b	.L79
+ 1096              		.cfi_endproc
+ 1097              	.LFE54:
+ 1099              		.section	.text.ADC_DMARequestModeConfig,"ax",%progbits
+ 1100              		.align	1
+ 1101              		.global	ADC_DMARequestModeConfig
+ 1102              		.syntax unified
+ 1103              		.code	16
+ 1104              		.thumb_func
+ 1105              		.fpu softvfp
+ 1107              	ADC_DMARequestModeConfig:
+ 1108              	.LVL49:
+ 1109              	.LFB55:
+ 928:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 929:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 930:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the ADC DMA request after last transfer (Single-ADC mode)
+ 931:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+ 932:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_DMARequestMode: the ADC channel to configure. 
+ 933:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+ 934:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_DMAMode_OneShot  : DMA One Shot Mode 
+ 935:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_DMAMode_Circular : DMA Circular Mode  
+ 936:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *  @retval None
+ 937:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 938:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_DMARequestModeConfig(ADC_TypeDef* ADCx, uint32_t ADC_DMARequestMode)
+ 939:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1110              		.loc 1 939 1 is_stmt 1 view -0
+ 1111              		.cfi_startproc
+ 1112              		@ args = 0, pretend = 0, frame = 0
+ 1113              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1114              		@ link register save eliminated.
+ 940:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+ 941:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1115              		.loc 1 941 3 view .LVU267
+ 942:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 943:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CFGR1 &= (uint32_t)~ADC_CFGR1_DMACFG;
+ 1116              		.loc 1 943 3 view .LVU268
+ 1117              		.loc 1 943 15 is_stmt 0 view .LVU269
+ 1118 0000 C268     		ldr	r2, [r0, #12]
+ 1119 0002 0223     		movs	r3, #2
+ 1120 0004 9A43     		bics	r2, r3
+ 1121 0006 C260     		str	r2, [r0, #12]
+ARM GAS  /tmp/cc8DdBWC.s 			page 37
+
+
+ 944:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->CFGR1 |= (uint32_t)ADC_DMARequestMode;
+ 1122              		.loc 1 944 3 is_stmt 1 view .LVU270
+ 1123              		.loc 1 944 15 is_stmt 0 view .LVU271
+ 1124 0008 C368     		ldr	r3, [r0, #12]
+ 1125 000a 0B43     		orrs	r3, r1
+ 1126 000c C360     		str	r3, [r0, #12]
+ 945:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1127              		.loc 1 945 1 view .LVU272
+ 1128              		@ sp needed
+ 1129 000e 7047     		bx	lr
+ 1130              		.cfi_endproc
+ 1131              	.LFE55:
+ 1133              		.section	.text.ADC_ITConfig,"ax",%progbits
+ 1134              		.align	1
+ 1135              		.global	ADC_ITConfig
+ 1136              		.syntax unified
+ 1137              		.code	16
+ 1138              		.thumb_func
+ 1139              		.fpu softvfp
+ 1141              	ADC_ITConfig:
+ 1142              	.LVL50:
+ 1143              	.LFB56:
+ 946:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 947:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+ 948:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @}
+ 949:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+ 950:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 951:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /** @defgroup ADC_Group7 Interrupts and flags management functions
+ 952:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *  @brief   Interrupts and flags management functions.
+ 953:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  *
+ 954:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @verbatim   
+ 955:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 956:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****             ##### Interrupts and flags management functions #####
+ 957:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****  ===============================================================================
+ 958:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] This section provides functions allowing to configure the ADC Interrupts 
+ 959:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          and get the status and clear flags and Interrupts pending bits.
+ 960:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+ 961:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] The ADC provide 6 Interrupts sources and 11 Flags which can be divided into 
+ 962:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          3 groups:
+ 963:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 964:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *** Flags for ADC status ***
+ 965:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ======================================================
+ 966:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..]
+ 967:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+)Flags :
+ 968:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_ADRDY : This flag is set after the ADC has been enabled (bit ADEN=1)
+ 969:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                and when the ADC reaches a state where it is ready to accept conversion requests
+ 970:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_ADEN : This flag is set by software to enable the ADC.
+ 971:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 The ADC will be effectively ready to operate once the ADRDY flag has been set.
+ 972:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_ADDIS : This flag is cleared once the ADC is effectively
+ 973:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 disabled.
+ 974:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_ADSTART : This flag is cleared after the execution of
+ 975:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 ADC_StopOfConversion() function, at the same time as the ADSTP bit is
+ 976:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 cleared by hardware
+ 977:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_ADSTP : This flag is cleared by hardware when the conversion
+ 978:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 is effectively discarded and the ADC is ready to accept a new start conversion
+ 979:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_ADCAL : This flag is set once the calibration is complete.
+ 980:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ARM GAS  /tmp/cc8DdBWC.s 			page 38
+
+
+ 981:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+)Interrupts 
+ 982:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_IT_ADRDY : specifies the interrupt source for ADC ready event.
+ 983:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 984:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *** Flags and Interrupts for ADC channel conversion ***
+ 985:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   =====================================================
+ 986:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..]
+ 987:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+)Flags :
+ 988:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_EOC : This flag is set by hardware at the end of each conversion
+ 989:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 of a channel when a new data result is available in the data register
+ 990:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_EOSEQ : This bit is set by hardware at the end of the conversion
+ 991:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 of a sequence of channels selected by ADC_ChannelConfig() function.
+ 992:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_EOSMP : This bit is set by hardware at the end of the sampling phase.
+ 993:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_OVR : This flag is set by hardware when an overrun occurs,
+ 994:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 meaning that a new conversion has complete while the EOC flag was already set.
+ 995:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+ 996:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+)Interrupts :
+ 997:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_IT_EOC : specifies the interrupt source for end of conversion event.
+ 998:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_IT_EOSEQ : specifies the interrupt source for end of sequence event.
+ 999:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_IT_EOSMP : specifies the interrupt source for end of sampling event.
+1000:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_IT_OVR : specifies the interrupt source for Overrun detection 
+1001:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 event.
+1002:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1003:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *** Flags and Interrupts for the Analog Watchdog ***
+1004:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ================================================
+1005:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..]
+1006:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+)Flags :
+1007:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_FLAG_AWD: This flag is set by hardware when the converted
+1008:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 voltage crosses the values programmed thrsholds
+1009:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1010:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****         (+)Interrupts :
+1011:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****            (##) ADC_IT_AWD : specifies the interrupt source for Analog watchdog 
+1012:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****                 event.
+1013:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+1014:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] The user should identify which mode will be used in his application to 
+1015:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          manage the ADC controller events: Polling mode or Interrupt mode.
+1016:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+1017:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] In the Polling Mode it is advised to use the following functions:
+1018:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) ADC_GetFlagStatus() : to check if flags events occur.
+1019:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) ADC_ClearFlag()     : to clear the flags events.
+1020:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+1021:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     [..] In the Interrupt Mode it is advised to use the following functions:
+1022:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) ADC_ITConfig()       : to enable or disable the interrupt source.
+1023:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) ADC_GetITStatus()    : to check if Interrupt occurs.
+1024:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****          (+) ADC_ClearITPendingBit() : to clear the Interrupt pending Bit 
+1025:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****              (corresponding Flag).
+1026:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1027:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** @endverbatim
+1028:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @{
+1029:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+1030:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1031:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+1032:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Enables or disables the specified ADC interrupts.
+1033:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC peripheral.
+1034:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_IT: specifies the ADC interrupt sources to be enabled or disabled.
+1035:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+1036:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_ADRDY: ADC ready interrupt 
+1037:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOSMP: End of sampling interrupt
+ARM GAS  /tmp/cc8DdBWC.s 			page 39
+
+
+1038:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOC: End of conversion interrupt 
+1039:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOSEQ: End of sequence of conversion interrupt
+1040:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_OVR: overrun interrupt
+1041:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_AWD: Analog watchdog interrupt
+1042:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  NewState: new state of the specified ADC interrupts.
+1043:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *         This parameter can be: ENABLE or DISABLE.
+1044:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+1045:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+1046:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_ITConfig(ADC_TypeDef* ADCx, uint32_t ADC_IT, FunctionalState NewState)
+1047:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1144              		.loc 1 1047 1 is_stmt 1 view -0
+ 1145              		.cfi_startproc
+ 1146              		@ args = 0, pretend = 0, frame = 0
+ 1147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1148              		@ link register save eliminated.
+1048:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+1049:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1149              		.loc 1 1049 3 view .LVU274
+1050:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 1150              		.loc 1 1050 3 view .LVU275
+1051:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_CONFIG_IT(ADC_IT)); 
+ 1151              		.loc 1 1051 3 view .LVU276
+1052:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1053:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (NewState != DISABLE)
+ 1152              		.loc 1 1053 3 view .LVU277
+ 1153              		.loc 1 1053 6 is_stmt 0 view .LVU278
+ 1154 0000 002A     		cmp	r2, #0
+ 1155 0002 03D0     		beq	.L84
+1054:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1055:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Enable the selected ADC interrupts */
+1056:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->IER |= ADC_IT;
+ 1156              		.loc 1 1056 5 is_stmt 1 view .LVU279
+ 1157              		.loc 1 1056 15 is_stmt 0 view .LVU280
+ 1158 0004 4368     		ldr	r3, [r0, #4]
+ 1159 0006 1943     		orrs	r1, r3
+ 1160              	.LVL51:
+ 1161              		.loc 1 1056 15 view .LVU281
+ 1162 0008 4160     		str	r1, [r0, #4]
+ 1163              	.L83:
+1057:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1058:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+1059:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1060:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* Disable the selected ADC interrupts */
+1061:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     ADCx->IER &= (~(uint32_t)ADC_IT);
+1062:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1063:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1164              		.loc 1 1063 1 view .LVU282
+ 1165              		@ sp needed
+ 1166 000a 7047     		bx	lr
+ 1167              	.LVL52:
+ 1168              	.L84:
+1061:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1169              		.loc 1 1061 5 is_stmt 1 view .LVU283
+1061:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1170              		.loc 1 1061 15 is_stmt 0 view .LVU284
+ 1171 000c 4368     		ldr	r3, [r0, #4]
+ 1172 000e 8B43     		bics	r3, r1
+ARM GAS  /tmp/cc8DdBWC.s 			page 40
+
+
+ 1173 0010 4360     		str	r3, [r0, #4]
+ 1174              		.loc 1 1063 1 view .LVU285
+ 1175 0012 FAE7     		b	.L83
+ 1176              		.cfi_endproc
+ 1177              	.LFE56:
+ 1179              		.section	.text.ADC_GetFlagStatus,"ax",%progbits
+ 1180              		.align	1
+ 1181              		.global	ADC_GetFlagStatus
+ 1182              		.syntax unified
+ 1183              		.code	16
+ 1184              		.thumb_func
+ 1185              		.fpu softvfp
+ 1187              	ADC_GetFlagStatus:
+ 1188              	.LVL53:
+ 1189              	.LFB57:
+1064:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1065:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+1066:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Checks whether the specified ADC flag is set or not.
+1067:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+1068:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_FLAG: specifies the flag to check. 
+1069:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+1070:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_AWD: Analog watchdog flag
+1071:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_OVR: Overrun flag 
+1072:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_EOSEQ: End of Sequence flag
+1073:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_EOC: End of conversion flag
+1074:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_EOSMP: End of sampling flag
+1075:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADRDY: ADC Ready flag
+1076:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADEN: ADC enable flag 
+1077:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADDIS: ADC disable flag 
+1078:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADSTART: ADC start flag 
+1079:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADSTP: ADC stop flag
+1080:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADCAL: ADC Calibration flag
+1081:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval The new state of ADC_FLAG (SET or RESET).
+1082:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+1083:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
+1084:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1190              		.loc 1 1084 1 is_stmt 1 view -0
+ 1191              		.cfi_startproc
+ 1192              		@ args = 0, pretend = 0, frame = 0
+ 1193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1194              		@ link register save eliminated.
+1085:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   FlagStatus bitstatus = RESET;
+ 1195              		.loc 1 1085 3 view .LVU287
+1086:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   uint32_t tmpreg = 0;
+ 1196              		.loc 1 1086 3 view .LVU288
+1087:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1088:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+1089:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1197              		.loc 1 1089 3 view .LVU289
+1090:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_GET_FLAG(ADC_FLAG));
+ 1198              		.loc 1 1090 3 view .LVU290
+1091:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1092:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if((uint32_t)(ADC_FLAG & 0x01000000))
+ 1199              		.loc 1 1092 3 view .LVU291
+ 1200              		.loc 1 1092 5 is_stmt 0 view .LVU292
+ 1201 0000 CB01     		lsls	r3, r1, #7
+ 1202 0002 06D5     		bpl	.L87
+ARM GAS  /tmp/cc8DdBWC.s 			page 41
+
+
+1093:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1094:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     tmpreg = ADCx->CR & 0xFEFFFFFF;
+ 1203              		.loc 1 1094 5 is_stmt 1 view .LVU293
+ 1204              		.loc 1 1094 18 is_stmt 0 view .LVU294
+ 1205 0004 8368     		ldr	r3, [r0, #8]
+ 1206              		.loc 1 1094 12 view .LVU295
+ 1207 0006 054A     		ldr	r2, .L91
+ 1208 0008 1340     		ands	r3, r2
+ 1209              	.LVL54:
+ 1210              	.L88:
+1095:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1096:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+1097:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1098:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     tmpreg = ADCx->ISR;
+1099:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1100:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   
+1101:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the status of the specified ADC flag */
+1102:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if ((tmpreg & ADC_FLAG) != (uint32_t)RESET)
+ 1211              		.loc 1 1102 3 is_stmt 1 view .LVU296
+ 1212              		.loc 1 1102 6 is_stmt 0 view .LVU297
+ 1213 000a 1942     		tst	r1, r3
+ 1214 000c 03D0     		beq	.L90
+1103:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1104:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* ADC_FLAG is set */
+1105:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     bitstatus = SET;
+ 1215              		.loc 1 1105 15 view .LVU298
+ 1216 000e 0120     		movs	r0, #1
+ 1217              	.LVL55:
+ 1218              	.L89:
+1106:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1107:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+1108:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1109:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* ADC_FLAG is reset */
+1110:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     bitstatus = RESET;
+1111:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1112:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Return the ADC_FLAG status */
+1113:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   return  bitstatus;
+ 1219              		.loc 1 1113 3 is_stmt 1 view .LVU299
+1114:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1220              		.loc 1 1114 1 is_stmt 0 view .LVU300
+ 1221              		@ sp needed
+ 1222 0010 7047     		bx	lr
+ 1223              	.LVL56:
+ 1224              	.L87:
+1098:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1225              		.loc 1 1098 5 is_stmt 1 view .LVU301
+1098:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1226              		.loc 1 1098 12 is_stmt 0 view .LVU302
+ 1227 0012 0368     		ldr	r3, [r0]
+ 1228              	.LVL57:
+1098:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1229              		.loc 1 1098 12 view .LVU303
+ 1230 0014 F9E7     		b	.L88
+ 1231              	.L90:
+1110:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1232              		.loc 1 1110 15 view .LVU304
+ 1233 0016 0020     		movs	r0, #0
+ARM GAS  /tmp/cc8DdBWC.s 			page 42
+
+
+ 1234              	.LVL58:
+1110:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1235              		.loc 1 1110 15 view .LVU305
+ 1236 0018 FAE7     		b	.L89
+ 1237              	.L92:
+ 1238 001a C046     		.align	2
+ 1239              	.L91:
+ 1240 001c FFFFFFFE 		.word	-16777217
+ 1241              		.cfi_endproc
+ 1242              	.LFE57:
+ 1244              		.section	.text.ADC_ClearFlag,"ax",%progbits
+ 1245              		.align	1
+ 1246              		.global	ADC_ClearFlag
+ 1247              		.syntax unified
+ 1248              		.code	16
+ 1249              		.thumb_func
+ 1250              		.fpu softvfp
+ 1252              	ADC_ClearFlag:
+ 1253              	.LVL59:
+ 1254              	.LFB58:
+1115:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1116:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+1117:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Clears the ADCx's pending flags.
+1118:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+1119:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_FLAG: specifies the flag to clear. 
+1120:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be any combination of the following values:
+1121:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_AWD: Analog watchdog flag
+1122:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_EOC: End of conversion flag
+1123:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_ADRDY: ADC Ready flag
+1124:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_EOSMP: End of sampling flag
+1125:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_EOSEQ: End of Sequence flag
+1126:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_FLAG_OVR: Overrun flag 
+1127:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+1128:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+1129:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_ClearFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG)
+1130:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1255              		.loc 1 1130 1 is_stmt 1 view -0
+ 1256              		.cfi_startproc
+ 1257              		@ args = 0, pretend = 0, frame = 0
+ 1258              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1259              		@ link register save eliminated.
+1131:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+1132:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1260              		.loc 1 1132 3 view .LVU307
+1133:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_CLEAR_FLAG(ADC_FLAG));
+ 1261              		.loc 1 1133 3 view .LVU308
+1134:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1135:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Clear the selected ADC flags */
+1136:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->ISR = (uint32_t)ADC_FLAG;
+ 1262              		.loc 1 1136 3 view .LVU309
+ 1263              		.loc 1 1136 13 is_stmt 0 view .LVU310
+ 1264 0000 0160     		str	r1, [r0]
+1137:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1265              		.loc 1 1137 1 view .LVU311
+ 1266              		@ sp needed
+ 1267 0002 7047     		bx	lr
+ 1268              		.cfi_endproc
+ARM GAS  /tmp/cc8DdBWC.s 			page 43
+
+
+ 1269              	.LFE58:
+ 1271              		.section	.text.ADC_GetITStatus,"ax",%progbits
+ 1272              		.align	1
+ 1273              		.global	ADC_GetITStatus
+ 1274              		.syntax unified
+ 1275              		.code	16
+ 1276              		.thumb_func
+ 1277              		.fpu softvfp
+ 1279              	ADC_GetITStatus:
+ 1280              	.LVL60:
+ 1281              	.LFB59:
+1138:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1139:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+1140:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Checks whether the specified ADC interrupt has occurred or not.
+1141:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral
+1142:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_IT: specifies the ADC interrupt source to check.
+1143:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+1144:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_ADRDY: ADC ready interrupt 
+1145:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOSMP: End of sampling interrupt
+1146:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOC: End of conversion interrupt 
+1147:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOSEQ: End of sequence of conversion interrupt
+1148:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_OVR: overrun interrupt
+1149:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_AWD: Analog watchdog interrupt
+1150:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval The new state of ADC_IT (SET or RESET).
+1151:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+1152:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx, uint32_t ADC_IT)
+1153:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1282              		.loc 1 1153 1 is_stmt 1 view -0
+ 1283              		.cfi_startproc
+ 1284              		@ args = 0, pretend = 0, frame = 0
+ 1285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1286              		@ link register save eliminated.
+1154:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ITStatus bitstatus = RESET;
+ 1287              		.loc 1 1154 3 view .LVU313
+1155:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   uint32_t enablestatus = 0;
+ 1288              		.loc 1 1155 3 view .LVU314
+1156:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1157:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+1158:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1289              		.loc 1 1158 3 view .LVU315
+1159:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_GET_IT(ADC_IT));
+ 1290              		.loc 1 1159 3 view .LVU316
+1160:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1161:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Get the ADC_IT enable bit status */
+1162:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   enablestatus = (uint32_t)(ADCx->IER & ADC_IT); 
+ 1291              		.loc 1 1162 3 view .LVU317
+ 1292              		.loc 1 1162 33 is_stmt 0 view .LVU318
+ 1293 0000 4368     		ldr	r3, [r0, #4]
+ 1294              		.loc 1 1162 16 view .LVU319
+ 1295 0002 0B40     		ands	r3, r1
+ 1296              	.LVL61:
+1163:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1164:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the status of the specified ADC interrupt */
+1165:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   if (((uint32_t)(ADCx->ISR & ADC_IT) != (uint32_t)RESET) && (enablestatus != (uint32_t)RESET))
+ 1297              		.loc 1 1165 3 is_stmt 1 view .LVU320
+ 1298              		.loc 1 1165 23 is_stmt 0 view .LVU321
+ 1299 0004 0268     		ldr	r2, [r0]
+ARM GAS  /tmp/cc8DdBWC.s 			page 44
+
+
+ 1300              		.loc 1 1165 6 view .LVU322
+ 1301 0006 1142     		tst	r1, r2
+ 1302 0008 03D0     		beq	.L96
+ 1303              		.loc 1 1165 59 discriminator 1 view .LVU323
+ 1304 000a 002B     		cmp	r3, #0
+ 1305 000c 03D1     		bne	.L97
+1166:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1167:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* ADC_IT is set */
+1168:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     bitstatus = SET;
+1169:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1170:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   else
+1171:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   {
+1172:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     /* ADC_IT is reset */
+1173:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****     bitstatus = RESET;
+ 1306              		.loc 1 1173 15 view .LVU324
+ 1307 000e 0020     		movs	r0, #0
+ 1308              	.LVL62:
+ 1309              		.loc 1 1173 15 view .LVU325
+ 1310 0010 00E0     		b	.L95
+ 1311              	.LVL63:
+ 1312              	.L96:
+ 1313              		.loc 1 1173 15 view .LVU326
+ 1314 0012 0020     		movs	r0, #0
+ 1315              	.LVL64:
+ 1316              	.L95:
+1174:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+1175:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Return the ADC_IT status */
+1176:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   return  bitstatus;
+ 1317              		.loc 1 1176 3 is_stmt 1 view .LVU327
+1177:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1318              		.loc 1 1177 1 is_stmt 0 view .LVU328
+ 1319              		@ sp needed
+ 1320 0014 7047     		bx	lr
+ 1321              	.LVL65:
+ 1322              	.L97:
+1168:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1323              		.loc 1 1168 15 view .LVU329
+ 1324 0016 0120     		movs	r0, #1
+ 1325              	.LVL66:
+1168:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   }
+ 1326              		.loc 1 1168 15 view .LVU330
+ 1327 0018 FCE7     		b	.L95
+ 1328              		.cfi_endproc
+ 1329              	.LFE59:
+ 1331              		.section	.text.ADC_ClearITPendingBit,"ax",%progbits
+ 1332              		.align	1
+ 1333              		.global	ADC_ClearITPendingBit
+ 1334              		.syntax unified
+ 1335              		.code	16
+ 1336              		.thumb_func
+ 1337              		.fpu softvfp
+ 1339              	ADC_ClearITPendingBit:
+ 1340              	.LVL67:
+ 1341              	.LFB60:
+1178:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1179:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** /**
+1180:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @brief  Clears the ADCx's interrupt pending bits.
+ARM GAS  /tmp/cc8DdBWC.s 			page 45
+
+
+1181:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADCx: where x can be 1 to select the ADC1 peripheral.
+1182:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @param  ADC_IT: specifies the ADC interrupt pending bit to clear.
+1183:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *   This parameter can be one of the following values:
+1184:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_ADRDY: ADC ready interrupt
+1185:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOSMP: End of sampling interrupt
+1186:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOC: End of conversion interrupt
+1187:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_EOSEQ: End of sequence of conversion interrupt
+1188:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_OVR: overrun interrupt
+1189:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   *     @arg ADC_IT_AWD: Analog watchdog interrupt
+1190:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   * @retval None
+1191:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   */
+1192:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** void ADC_ClearITPendingBit(ADC_TypeDef* ADCx, uint32_t ADC_IT)
+1193:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** {
+ 1342              		.loc 1 1193 1 is_stmt 1 view -0
+ 1343              		.cfi_startproc
+ 1344              		@ args = 0, pretend = 0, frame = 0
+ 1345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1346              		@ link register save eliminated.
+1194:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Check the parameters */
+1195:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_ALL_PERIPH(ADCx));
+ 1347              		.loc 1 1195 3 view .LVU332
+1196:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   assert_param(IS_ADC_CLEAR_IT(ADC_IT));
+ 1348              		.loc 1 1196 3 view .LVU333
+1197:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** 
+1198:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   /* Clear the selected ADC interrupt pending bits */
+1199:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c ****   ADCx->ISR = (uint32_t)ADC_IT; 
+ 1349              		.loc 1 1199 3 view .LVU334
+ 1350              		.loc 1 1199 13 is_stmt 0 view .LVU335
+ 1351 0000 0160     		str	r1, [r0]
+1200:Libraries/STM32F0xx_StdPeriph_Driver/src/stm32f0xx_adc.c **** }
+ 1352              		.loc 1 1200 1 view .LVU336
+ 1353              		@ sp needed
+ 1354 0002 7047     		bx	lr
+ 1355              		.cfi_endproc
+ 1356              	.LFE60:
+ 1358              		.text
+ 1359              	.Letext0:
+ 1360              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 1361              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 1362              		.file 4 "./Libraries/CMSIS/ST/STM32F0xx/Include/stm32f0xx.h"
+ 1363              		.file 5 "./Libraries/STM32F0xx_StdPeriph_Driver/inc/stm32f0xx_adc.h"
+ 1364              		.file 6 "./Libraries/CMSIS/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 1365              		.file 7 "./Libraries/STM32F0xx_StdPeriph_Driver/inc/stm32f0xx_rcc.h"
+ARM GAS  /tmp/cc8DdBWC.s 			page 46
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f0xx_adc.c
+     /tmp/cc8DdBWC.s:16     .text.ADC_DeInit:0000000000000000 $t
+     /tmp/cc8DdBWC.s:24     .text.ADC_DeInit:0000000000000000 ADC_DeInit
+     /tmp/cc8DdBWC.s:70     .text.ADC_DeInit:0000000000000020 $d
+     /tmp/cc8DdBWC.s:75     .text.ADC_Init:0000000000000000 $t
+     /tmp/cc8DdBWC.s:82     .text.ADC_Init:0000000000000000 ADC_Init
+     /tmp/cc8DdBWC.s:147    .text.ADC_Init:0000000000000028 $d
+     /tmp/cc8DdBWC.s:152    .text.ADC_StructInit:0000000000000000 $t
+     /tmp/cc8DdBWC.s:159    .text.ADC_StructInit:0000000000000000 ADC_StructInit
+     /tmp/cc8DdBWC.s:193    .text.ADC_Cmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:200    .text.ADC_Cmd:0000000000000000 ADC_Cmd
+     /tmp/cc8DdBWC.s:237    .text.ADC_JitterCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:244    .text.ADC_JitterCmd:0000000000000000 ADC_JitterCmd
+     /tmp/cc8DdBWC.s:283    .text.ADC_AutoPowerOffCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:290    .text.ADC_AutoPowerOffCmd:0000000000000000 ADC_AutoPowerOffCmd
+     /tmp/cc8DdBWC.s:327    .text.ADC_AutoPowerOffCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:332    .text.ADC_WaitModeCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:339    .text.ADC_WaitModeCmd:0000000000000000 ADC_WaitModeCmd
+     /tmp/cc8DdBWC.s:376    .text.ADC_WaitModeCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:381    .text.ADC_AnalogWatchdogCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:388    .text.ADC_AnalogWatchdogCmd:0000000000000000 ADC_AnalogWatchdogCmd
+     /tmp/cc8DdBWC.s:425    .text.ADC_AnalogWatchdogCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:430    .text.ADC_AnalogWatchdogThresholdsConfig:0000000000000000 $t
+     /tmp/cc8DdBWC.s:437    .text.ADC_AnalogWatchdogThresholdsConfig:0000000000000000 ADC_AnalogWatchdogThresholdsConfig
+     /tmp/cc8DdBWC.s:464    .text.ADC_AnalogWatchdogSingleChannelConfig:0000000000000000 $t
+     /tmp/cc8DdBWC.s:471    .text.ADC_AnalogWatchdogSingleChannelConfig:0000000000000000 ADC_AnalogWatchdogSingleChannelConfig
+     /tmp/cc8DdBWC.s:504    .text.ADC_AnalogWatchdogSingleChannelConfig:000000000000000c $d
+     /tmp/cc8DdBWC.s:509    .text.ADC_AnalogWatchdogSingleChannelCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:516    .text.ADC_AnalogWatchdogSingleChannelCmd:0000000000000000 ADC_AnalogWatchdogSingleChannelCmd
+     /tmp/cc8DdBWC.s:553    .text.ADC_AnalogWatchdogSingleChannelCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:558    .text.ADC_TempSensorCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:565    .text.ADC_TempSensorCmd:0000000000000000 ADC_TempSensorCmd
+     /tmp/cc8DdBWC.s:603    .text.ADC_TempSensorCmd:0000000000000020 $d
+     /tmp/cc8DdBWC.s:609    .text.ADC_VrefintCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:616    .text.ADC_VrefintCmd:0000000000000000 ADC_VrefintCmd
+     /tmp/cc8DdBWC.s:654    .text.ADC_VrefintCmd:0000000000000020 $d
+     /tmp/cc8DdBWC.s:660    .text.ADC_VbatCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:667    .text.ADC_VbatCmd:0000000000000000 ADC_VbatCmd
+     /tmp/cc8DdBWC.s:705    .text.ADC_VbatCmd:0000000000000020 $d
+     /tmp/cc8DdBWC.s:711    .text.ADC_ChannelConfig:0000000000000000 $t
+     /tmp/cc8DdBWC.s:718    .text.ADC_ChannelConfig:0000000000000000 ADC_ChannelConfig
+     /tmp/cc8DdBWC.s:748    .text.ADC_ContinuousModeCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:755    .text.ADC_ContinuousModeCmd:0000000000000000 ADC_ContinuousModeCmd
+     /tmp/cc8DdBWC.s:792    .text.ADC_ContinuousModeCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:797    .text.ADC_DiscModeCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:804    .text.ADC_DiscModeCmd:0000000000000000 ADC_DiscModeCmd
+     /tmp/cc8DdBWC.s:841    .text.ADC_DiscModeCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:846    .text.ADC_OverrunModeCmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:853    .text.ADC_OverrunModeCmd:0000000000000000 ADC_OverrunModeCmd
+     /tmp/cc8DdBWC.s:890    .text.ADC_OverrunModeCmd:000000000000001c $d
+     /tmp/cc8DdBWC.s:895    .text.ADC_GetCalibrationFactor:0000000000000000 $t
+     /tmp/cc8DdBWC.s:902    .text.ADC_GetCalibrationFactor:0000000000000000 ADC_GetCalibrationFactor
+     /tmp/cc8DdBWC.s:969    .text.ADC_StopOfConversion:0000000000000000 $t
+     /tmp/cc8DdBWC.s:976    .text.ADC_StopOfConversion:0000000000000000 ADC_StopOfConversion
+     /tmp/cc8DdBWC.s:998    .text.ADC_StartOfConversion:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1005   .text.ADC_StartOfConversion:0000000000000000 ADC_StartOfConversion
+ARM GAS  /tmp/cc8DdBWC.s 			page 47
+
+
+     /tmp/cc8DdBWC.s:1027   .text.ADC_GetConversionValue:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1034   .text.ADC_GetConversionValue:0000000000000000 ADC_GetConversionValue
+     /tmp/cc8DdBWC.s:1056   .text.ADC_DMACmd:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1063   .text.ADC_DMACmd:0000000000000000 ADC_DMACmd
+     /tmp/cc8DdBWC.s:1100   .text.ADC_DMARequestModeConfig:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1107   .text.ADC_DMARequestModeConfig:0000000000000000 ADC_DMARequestModeConfig
+     /tmp/cc8DdBWC.s:1134   .text.ADC_ITConfig:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1141   .text.ADC_ITConfig:0000000000000000 ADC_ITConfig
+     /tmp/cc8DdBWC.s:1180   .text.ADC_GetFlagStatus:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1187   .text.ADC_GetFlagStatus:0000000000000000 ADC_GetFlagStatus
+     /tmp/cc8DdBWC.s:1240   .text.ADC_GetFlagStatus:000000000000001c $d
+     /tmp/cc8DdBWC.s:1245   .text.ADC_ClearFlag:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1252   .text.ADC_ClearFlag:0000000000000000 ADC_ClearFlag
+     /tmp/cc8DdBWC.s:1272   .text.ADC_GetITStatus:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1279   .text.ADC_GetITStatus:0000000000000000 ADC_GetITStatus
+     /tmp/cc8DdBWC.s:1332   .text.ADC_ClearITPendingBit:0000000000000000 $t
+     /tmp/cc8DdBWC.s:1339   .text.ADC_ClearITPendingBit:0000000000000000 ADC_ClearITPendingBit
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphResetCmd

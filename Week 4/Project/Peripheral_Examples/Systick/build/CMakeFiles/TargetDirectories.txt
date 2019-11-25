@@ -1,0 +1,4 @@
+/home/mert/dev/stm32/KON309E/Week 4/Project/Peripheral_Examples/Systick/build/CMakeFiles/rebuild_cache.dir
+/home/mert/dev/stm32/KON309E/Week 4/Project/Peripheral_Examples/Systick/build/CMakeFiles/edit_cache.dir
+/home/mert/dev/stm32/KON309E/Week 4/Project/Peripheral_Examples/Systick/build/CMakeFiles/systick.elf.dir
+/home/mert/dev/stm32/KON309E/Week 4/Project/Peripheral_Examples/Systick/build/CMakeFiles/flash.dir

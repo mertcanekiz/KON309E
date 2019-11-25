@@ -113,10 +113,8 @@ void TIM3_IRQHandler(void)
     
     if (getState() == STATE_3S_A || getState() == STATE_3S_B) {
         setState(STATE_5S_A);
-        setPeriod(5000);
     } else if (getState() == STATE_5S_A || getState() == STATE_5S_B) {
         setState(STATE_3S_A);
-        setPeriod(3000);
     }
     TIM_DeInit(TIM3);
     TIM_Config();
